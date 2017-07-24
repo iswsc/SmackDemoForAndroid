@@ -17,4 +17,48 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ww">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="mm">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="mw">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="mw_16" parent="mw">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="mm_16" parent="mm">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ww_16" parent="ww">
+        <item name="android:textSize">16sp</item>
+
+    </style>
+
+    <style name="mw_16_back" parent="mw_16">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="mm_16_back" parent="mm_16">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ww_16_back" parent="ww_16">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="mw_20" parent="mw">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="mw_20_white" parent="mw_20">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

@@ -1,6 +1,4 @@
-package com.iswsc.smackdemo;
-
-import android.util.Log;
+package com.iswsc.smackdemo.util;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SASLAuthentication;
@@ -8,9 +6,6 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
-import org.jivesoftware.smack.packet.IQ;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
@@ -33,15 +28,16 @@ public class XmppUtils {
     private String resource;
     private String serviceName;
 
+    public static final String ACTION_LOGIN = "com.iswsc.smackdemo.login";
 
     private XmppUtils() {
     }
 
-    public void init(String host, int port, String resource, String serviceName) {
+    public void init(String host, int port, String serviceName, String resource) {
         this.host = host;
         this.port = port;
-        this.resource = resource;
         this.serviceName = serviceName;
+        this.resource = resource;
     }
 
     public static XmppUtils getInstance() {
@@ -70,16 +66,16 @@ public class XmppUtils {
         return new XMPPTCPConnection(configuration);
     }
 
-    public void loginXmpp(final String userName, final String passWord,final StanzaListener packetListener, final StanzaFilter packetFilter) {
+    public void loginXmpp(final String userName, final String password, final StanzaListener packetListener, final StanzaFilter packetFilter) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 connection = createConnection();
-                connection.setParsingExceptionCallback( new ExceptionLoggingCallback());
-                connection.addPacketSendingListener(packetListener,packetFilter);
+                connection.setParsingExceptionCallback(new ExceptionLoggingCallback());
+                connection.addPacketSendingListener(packetListener, packetFilter);
                 try {
                     connection.connect();
-                    connection.login(userName,passWord,resource);
+                    connection.login(userName, password, resource);
                 } catch (SmackException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -89,5 +85,13 @@ public class XmppUtils {
                 }
             }
         }).start();
+    }
+
+    public void distory() {
+        if (connection != null) {
+            connection.disconnect();
+            connection = null;
+        }
+        instance = null;
     }
 }
