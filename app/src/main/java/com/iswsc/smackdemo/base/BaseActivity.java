@@ -1,11 +1,3 @@
-/**
- * RalncyPhone
- * com.ralncy.user.base
- * <p>
- * <p>
- * 2016-1-7
- * 开发人：吴平
- */
 package com.iswsc.smackdemo.base;
 
 import android.app.Activity;
@@ -32,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- *  * 基类 
+ *  * base
  * @author Administrator
  *
  */
