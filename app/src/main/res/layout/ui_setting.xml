@@ -12,6 +12,23 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/ww_16_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务器：" />
+
+            <EditText
+                android:id="@+id/host"
+                style="@style/mm_16_back"
+                android:hint="请输入host" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,13 +40,12 @@
                 style="@style/ww_16_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="账    号：" />
+                android:text="端口号：" />
 
             <EditText
-                android:id="@+id/account"
+                android:id="@+id/port"
                 style="@style/mm_16_back"
-                android:imeOptions="actionNext"
-                android:hint="请输入account" />
+                android:hint="请输入port" />
         </LinearLayout>
 
         <LinearLayout
@@ -42,13 +58,12 @@
                 style="@style/ww_16_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="密    码：" />
+                android:text="服务名：" />
 
             <EditText
-                android:id="@+id/password"
-                android:imeOptions="actionGo"
+                android:id="@+id/servername"
                 style="@style/mm_16_back"
-                android:hint="请输入password" />
+                android:hint="请输入servername" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,37 +73,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/login"
-                style="@style/mw_16_back"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="登录" />
-
-            <TextView
-                android:id="@+id/register"
-                style="@style/mw_16_back"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="注册" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/setting"
                 style="@style/ww_16_back"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="设置" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="资源名：" />
 
+            <EditText
+                android:id="@+id/resource"
+                style="@style/mm_16_back"
+                android:hint="请输入resource" />
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

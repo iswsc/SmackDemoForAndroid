@@ -44,24 +44,24 @@ public class XmppService extends Service {
         if (intent != null) {
             String action = intent.getAction();
             if (XmppUtils.ACTION_LOGIN.equals(action)) {
-                toLoginXmpp();
+                String account = intent.getStringExtra("account");
+                String password = intent.getStringExtra("password");
+                toLoginXmpp(account,password);
             }
         }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void toLoginXmpp() {
-        String userInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_USER_INFO);
-        if (!TextUtils.isEmpty(userInfo)) {
+    private void toLoginXmpp(String account,String password) {
+        String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
+        if (!TextUtils.isEmpty(serverInfo)) {
             try {
-                JSONObject jObj = new JSONObject(userInfo);
+                JSONObject jObj = new JSONObject(serverInfo);
                 String host          = jObj.optString("host");
                 String port          = jObj.optString("port");
                 String serverName    = jObj.optString("serverName");
                 String resource      = jObj.optString("resource");
-                String account       = jObj.optString("account");
-                String password      = jObj.optString("password");
                 XmppUtils.getInstance().distory();
                 XmppUtils.getInstance().init(host,Integer.parseInt(port),serverName,resource);
                 XmppUtils.getInstance().loginXmpp(account,password,myStanzaListener,myStanzaFilter);

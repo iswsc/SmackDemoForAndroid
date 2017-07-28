@@ -23,6 +23,9 @@
         <activity
             android:name=".ui.MainUI"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.SettingUI"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <service android:name=".XmppService" />
     </application>

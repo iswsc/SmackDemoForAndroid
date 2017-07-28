@@ -7,7 +7,8 @@ import android.content.SharedPreferences.Editor;
 public class MySP {
 	
 	public static final String FILE_APPLICATION = "user";
-	public static final String KEY_USER_INFO ="userinfo";
+	public static final String KEY_SERVER ="server";
+	public static final String KEY_USERINFO ="userinfo";
 
 	public static String readString(Context context,String fileName,String key){
 		if(context == null) return "";
