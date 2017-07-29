@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.text.TextUtils;
 
+import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MySP;
+import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.util.XmppUtils;
 
 import org.jivesoftware.smack.SmackException;
@@ -46,30 +48,55 @@ public class XmppService extends Service {
             if (XmppUtils.ACTION_LOGIN.equals(action)) {
                 String account = intent.getStringExtra("account");
                 String password = intent.getStringExtra("password");
-                toLoginXmpp(account,password);
+                toLoginXmpp(account, password);
             }
         }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void toLoginXmpp(String account,String password) {
+    private void toLoginXmpp(String account, String password) {
         String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
         if (!TextUtils.isEmpty(serverInfo)) {
             try {
                 JSONObject jObj = new JSONObject(serverInfo);
-                String host          = jObj.optString("host");
-                String port          = jObj.optString("port");
-                String serverName    = jObj.optString("serverName");
-                String resource      = jObj.optString("resource");
-                XmppUtils.getInstance().distory();
-                XmppUtils.getInstance().init(host,Integer.parseInt(port),serverName,resource);
-                XmppUtils.getInstance().loginXmpp(account,password,myStanzaListener,myStanzaFilter);
+                String host = jObj.optString("host");
+                String port = jObj.optString("port");
+                String serverName = jObj.optString("serverName");
+                String resource = jObj.optString("resource");
+                new LoginThread(host, port, serverName, resource, account, password).start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+    class LoginThread extends Thread {
+        private String host;
+        private String port;
+        private String serverName;
+        private String resource;
+        private String account;
+        private String password;
+
+        public LoginThread(String host, String port, String serverName, String resource, String account, String password) {
+            this.host = host;
+            this.port = port;
+            this.serverName = serverName;
+            this.resource = resource;
+            this.account = account;
+            this.password = password;
+        }
+
+        @Override
+        public void run() {
+            XmppUtils.getInstance().distory();
+            XmppUtils.getInstance().init(host, Integer.parseInt(port), serverName, resource);
+            XmppUtils.getInstance().loginXmpp(account, password, myStanzaListener, myStanzaFilter);
+            JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.XMPP_LOGIN_SUCCESS, null);
+        }
+    }
+
     class MyStanzaListener implements StanzaListener {
 
         @Override
@@ -77,13 +104,14 @@ public class XmppService extends Service {
 
         }
     }
+
     class MyStanzaFilter implements StanzaFilter {
 
         @Override
         public boolean accept(Stanza stanza) {
-            if(stanza instanceof Message)//拦截Message
+            if (stanza instanceof Message)//拦截Message
                 return true;
-            if(stanza instanceof Presence)//Presence
+            if (stanza instanceof Presence)//Presence
                 return true;
             return false;
         }

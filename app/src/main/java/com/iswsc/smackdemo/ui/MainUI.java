@@ -7,6 +7,7 @@ import android.view.DragEvent;
 import android.view.View;
 
 import com.iswsc.smackdemo.R;
+import com.iswsc.smackdemo.util.XmppUtils;
 
 public class MainUI extends Activity {
 
@@ -40,5 +41,9 @@ public class MainUI extends Activity {
         });
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        XmppUtils.getInstance().distory();
+    }
 }
