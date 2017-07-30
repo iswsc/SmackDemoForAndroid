@@ -131,8 +131,13 @@ public class RegisterUI extends BaseActivity {
                 XMPPConnection connection = XmppUtils.getInstance().createConnection(null,null);
                 AccountManager accountManager = AccountManager.getInstance(connection);
                 accountManager.createAccount(account,password);
+
             } catch (Exception e) {
                 e.printStackTrace();
+                if(e instanceof XMPPException.XMPPErrorException){
+                    showLogE( ( (XMPPException.XMPPErrorException) e ).getXMPPError().getCondition().toString());
+
+                }
             }
         }
     }
