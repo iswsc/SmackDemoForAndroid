@@ -2,11 +2,15 @@ package com.iswsc.smackdemo.util;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SASLAuthentication;
+import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+
+import java.io.IOException;
 
 /**
  * @version 1.0
@@ -43,7 +47,7 @@ public class XmppUtils {
         return instance;
     }
 
-    private XMPPTCPConnection createConnection() {
+    public XMPPTCPConnection createConnection(final StanzaListener packetListener, final StanzaFilter packetFilter) throws IOException, XMPPException, SmackException {
         XMPPTCPConnectionConfiguration configuration = null;
         try {
             configuration = XMPPTCPConnectionConfiguration.builder()
@@ -58,17 +62,19 @@ public class XmppUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new XMPPTCPConnection(configuration);
+        connection = new XMPPTCPConnection(configuration);
+        connection.setParsingExceptionCallback(new ExceptionLoggingCallback());
+        if (packetListener != null && packetFilter != null)
+            connection.addPacketSendingListener(packetListener, packetFilter);
+        connection.connect();
+        return connection;
     }
 
     public String loginXmpp(final String userName, final String password, final StanzaListener packetListener, final StanzaFilter packetFilter) {
         String result = XmppAction.XMPP_LOGIN_SUCCESS;
-        connection = createConnection();
-        connection.setParsingExceptionCallback(new ExceptionLoggingCallback());
-        connection.addPacketSendingListener(packetListener, packetFilter);
 
         try {
-            connection.connect();
+            connection = createConnection(packetListener, packetFilter);
             connection.login(userName, password, resource);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +94,7 @@ public class XmppUtils {
             } else if (e.getMessage().contains("XMPPError: conflict")) {//账号已经登录 无法重复登录
                 result = XmppAction.XMPP_LOGIN_ERROR_CONFLICT;
 
-            } else  result = XmppAction.XMPP_LOGIN_ERROR_NOT_AUTHORIZED;//用户名密码错误
+            } else result = XmppAction.XMPP_LOGIN_ERROR_NOT_AUTHORIZED;//用户名密码错误
         }
         return result;
     }

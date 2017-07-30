@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
@@ -90,7 +89,7 @@ public class LoginUI extends BaseActivity {
                 toLogin();
                 break;
             case R.id.register:
-                showToast("注册");
+                JacenUtils.intentUI(this, RegisterUI.class, null, false);
                 break;
             case R.id.setting:
                 JacenUtils.intentUI(this, SettingUI.class, null, false);
