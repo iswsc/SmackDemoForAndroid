@@ -1,4 +1,4 @@
-package com.iswsc.smackdemo;
+package com.iswsc.smackdemo.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -12,10 +12,13 @@ import com.iswsc.smackdemo.util.XmppUtils;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
+import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.json.JSONObject;
 
 /**
@@ -45,14 +48,85 @@ public class XmppService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             String action = intent.getAction();
-            if (XmppUtils.ACTION_LOGIN.equals(action)) {
-                String account = intent.getStringExtra("account");
-                String password = intent.getStringExtra("password");
+            String account = intent.getStringExtra("account");
+            String password = intent.getStringExtra("password");
+            String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
+            String host = null;
+            String port = null;
+            String serverName = null;
+            String resource = null;
+            if (!TextUtils.isEmpty(serverInfo)) {
+                try {
+                    JSONObject jObj = new JSONObject(serverInfo);
+                    host = jObj.optString("host");
+                    port = jObj.optString("port");
+                    serverName = jObj.optString("serverName");
+                    resource = jObj.optString("resource");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            XmppUtils.getInstance().init(host, Integer.parseInt(port), serverName, resource,myStanzaListener,myStanzaFilter);
+
+            if (XmppAction.ACTION_LOGIN.equals(action)) {
                 toLoginXmpp(account, password);
+            }else if (XmppAction.ACTION_REGISTER.equals(action)) {
+                toRegisterXmpp(account, password);
             }
         }
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void toRegisterXmpp(String account, String password){
+
+        if (!TextUtils.isEmpty(serverInfo)) {
+            try {
+                JSONObject jObj = new JSONObject(serverInfo);
+                String host = jObj.optString("host");
+                String port = jObj.optString("port");
+                String serverName = jObj.optString("serverName");
+                String resource = jObj.optString("resource");
+                new RegisterThread(host, port, serverName, resource, account, password).start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class RegisterThread extends Thread {
+
+        private String host;
+        private String port;
+        private String serverName;
+        private String resource;
+        private String account;
+        private String password;
+
+        public RegisterThread(String host, String port, String serverName, String resource, String account, String password) {
+            this.host = host;
+            this.port = port;
+            this.serverName = serverName;
+            this.resource = resource;
+            this.account = account;
+            this.password = password;
+        }
+
+        @Override
+        public void run() {
+            try {
+
+                AccountManager accountManager = AccountManager.getInstance(XmppUtils.getInstance().getConnection());
+                accountManager.createAccount(account, password);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (e instanceof XMPPException.XMPPErrorException) {
+                    ((XMPPException.XMPPErrorException) e).getXMPPError().getCondition().toString();
+
+                }
+            }
+        }
     }
 
     private void toLoginXmpp(String account, String password) {
@@ -93,7 +167,7 @@ public class XmppService extends Service {
             XmppUtils.getInstance().distory();
             XmppUtils.getInstance().init(host, Integer.parseInt(port), serverName, resource);
             XmppUtils.getInstance().loginXmpp(account, password, myStanzaListener, myStanzaFilter);
-            JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.XMPP_LOGIN_SUCCESS, null);
+            JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_LOGIN_SUCCESS, null);
         }
     }
 

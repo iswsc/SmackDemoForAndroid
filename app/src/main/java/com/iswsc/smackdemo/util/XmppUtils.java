@@ -27,17 +27,19 @@ public class XmppUtils {
     private int port;
     private String resource;
     private String serviceName;
-
-    public static final String ACTION_LOGIN = "com.iswsc.smackdemo.login";
+    private StanzaListener packetListener;
+    private StanzaFilter packetFilter;
 
     private XmppUtils() {
     }
 
-    public void init(String host, int port, String serviceName, String resource) {
+    public void init(String host, int port, String serviceName, String resource, StanzaListener packetListener, StanzaFilter packetFilter) {
         this.host = host;
         this.port = port;
         this.serviceName = serviceName;
         this.resource = resource;
+        this.packetListener = packetListener;
+        this.packetFilter = packetFilter;
     }
 
     public static XmppUtils getInstance() {
@@ -47,7 +49,7 @@ public class XmppUtils {
         return instance;
     }
 
-    public XMPPTCPConnection createConnection(final StanzaListener packetListener, final StanzaFilter packetFilter) throws IOException, XMPPException, SmackException {
+    private void createConnection() {
         XMPPTCPConnectionConfiguration configuration = null;
         try {
             configuration = XMPPTCPConnectionConfiguration.builder()
@@ -66,35 +68,47 @@ public class XmppUtils {
         connection.setParsingExceptionCallback(new ExceptionLoggingCallback());
         if (packetListener != null && packetFilter != null)
             connection.addPacketSendingListener(packetListener, packetFilter);
+    }
+
+    public XMPPTCPConnection getConnection() throws IOException, XMPPException, SmackException {
+        if (connection != null) {
+            if (connection.isConnected()) {
+                return connection;
+            } else {
+                connection = null;
+            }
+        }
+
+        createConnection();
         connection.connect();
         return connection;
     }
 
-    public String loginXmpp(final String userName, final String password, final StanzaListener packetListener, final StanzaFilter packetFilter) {
-        String result = XmppAction.XMPP_LOGIN_SUCCESS;
+    public String loginXmpp(final String userName, final String password) {
+        String result = XmppAction.ACTION_LOGIN_SUCCESS;
 
         try {
-            connection = createConnection(packetListener, packetFilter);
-            connection.login(userName, password, resource);
+
+            getConnection().login(userName, password, resource);
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("not-authorized")) {//用户名密码错误
-                result = XmppAction.XMPP_LOGIN_ERROR_NOT_AUTHORIZED;
+                result = XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED;
 
             } else if (e.getMessage().contains("java.net.UnknownHostException:") || e.getMessage().contains("Network is unreachable") || e.getMessage().contains("java.net.ConnectException: Connection refused:")) {
                 //无法连接到服务器: 不可达的主机名或地址.
-                result = XmppAction.XMPP_LOGIN_ERROR_UNKNOWNHOST;
+                result = XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST;
 
             } else if (e.getMessage().contains("Hostname verification of certificate failed")) {
-                result = XmppAction.XMPP_LOGIN_ERROR;
+                result = XmppAction.ACTION_LOGIN_ERROR;
 
             } else if (e.getMessage().contains("unable to find valid certification path to requested target")) {
-                result = XmppAction.XMPP_LOGIN_ERROR;
+                result = XmppAction.ACTION_LOGIN_ERROR;
 
             } else if (e.getMessage().contains("XMPPError: conflict")) {//账号已经登录 无法重复登录
-                result = XmppAction.XMPP_LOGIN_ERROR_CONFLICT;
+                result = XmppAction.ACTION_LOGIN_ERROR_CONFLICT;
 
-            } else result = XmppAction.XMPP_LOGIN_ERROR_NOT_AUTHORIZED;//用户名密码错误
+            } else result = XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED;//用户名密码错误
         }
         return result;
     }

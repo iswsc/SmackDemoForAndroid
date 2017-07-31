@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.XmppService;
+import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.base.BaseActivity;
 import com.iswsc.smackdemo.util.JacenDialogUtils;
 import com.iswsc.smackdemo.util.JacenUtils;
@@ -67,11 +67,11 @@ public class LoginUI extends BaseActivity {
         initAccount();
         mLoginBroadcastReceiver = new LoginBroadcastReceiver();
         mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(XmppAction.XMPP_LOGIN_SUCCESS);
-        mIntentFilter.addAction(XmppAction.XMPP_LOGIN_ERROR);
-        mIntentFilter.addAction(XmppAction.XMPP_LOGIN_ERROR_CONFLICT);
-        mIntentFilter.addAction(XmppAction.XMPP_LOGIN_ERROR_NOT_AUTHORIZED);
-        mIntentFilter.addAction(XmppAction.XMPP_LOGIN_ERROR_UNKNOWNHOST);
+        mIntentFilter.addAction(XmppAction.ACTION_LOGIN_SUCCESS);
+        mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR);
+        mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR_CONFLICT);
+        mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED);
+        mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST);
         JacenUtils.registerLocalBroadcastReceiver(this,mLoginBroadcastReceiver,mIntentFilter);
     }
 
@@ -127,7 +127,7 @@ public class LoginUI extends BaseActivity {
             Bundle bundle = new Bundle();
             bundle.putString("account", account);
             bundle.putString("password", password);
-            JacenUtils.intentService(this, XmppService.class, XmppUtils.ACTION_LOGIN, bundle);
+            JacenUtils.intentService(this, XmppService.class, XmppAction.ACTION_LOGIN, bundle);
             JacenDialogUtils.showDialog(this, "正在登录");
         }
     }
@@ -152,16 +152,16 @@ public class LoginUI extends BaseActivity {
             if(intent != null){
                 String action = intent.getAction();
                 JacenDialogUtils.dismissDialog();
-                if(XmppAction.XMPP_LOGIN_SUCCESS.equals(action)){
+                if(XmppAction.ACTION_LOGIN_SUCCESS.equals(action)){
                     showToast("登录成功");
                     JacenUtils.intentUI(LoginUI.this,MainUI.class,null,true);
-                }else if(XmppAction.XMPP_LOGIN_ERROR_NOT_AUTHORIZED.equals(action)){
+                }else if(XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED.equals(action)){
                     showToast("密码错误");
-                }else if(XmppAction.XMPP_LOGIN_ERROR_CONFLICT.equals(action)){
+                }else if(XmppAction.ACTION_LOGIN_ERROR_CONFLICT.equals(action)){
                     showToast("账号已登录，无法重复登录");
-                }else if(XmppAction.XMPP_LOGIN_ERROR_UNKNOWNHOST.equals(action)){
+                }else if(XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST.equals(action)){
                     showToast("无法连接到服务器: 不可达的主机名或地址.");
-                }else if(XmppAction.XMPP_LOGIN_ERROR.equals(action)){
+                }else if(XmppAction.ACTION_LOGIN_ERROR.equals(action)){
                     showToast("登录失败");
                 }
             }
