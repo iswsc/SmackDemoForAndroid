@@ -32,6 +32,8 @@ public class XmppService extends Service {
     private MyStanzaListener myStanzaListener;
     private MyStanzaFilter myStanzaFilter;
 
+
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -51,10 +53,8 @@ public class XmppService extends Service {
             String account = intent.getStringExtra("account");
             String password = intent.getStringExtra("password");
             String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
-            String host = null;
-            String port = null;
-            String serverName = null;
-            String resource = null;
+
+            //String host,String port,String serverName,String resource,
             if (!TextUtils.isEmpty(serverInfo)) {
                 try {
                     JSONObject jObj = new JSONObject(serverInfo);
@@ -66,7 +66,7 @@ public class XmppService extends Service {
                     e.printStackTrace();
                 }
             }
-            XmppUtils.getInstance().init(host, Integer.parseInt(port), serverName, resource,myStanzaListener,myStanzaFilter);
+            XmppUtils.getInstance().init(myStanzaListener,myStanzaFilter);
 
             if (XmppAction.ACTION_LOGIN.equals(action)) {
                 toLoginXmpp(account, password);
@@ -130,19 +130,7 @@ public class XmppService extends Service {
     }
 
     private void toLoginXmpp(String account, String password) {
-        String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
-        if (!TextUtils.isEmpty(serverInfo)) {
-            try {
-                JSONObject jObj = new JSONObject(serverInfo);
-                String host = jObj.optString("host");
-                String port = jObj.optString("port");
-                String serverName = jObj.optString("serverName");
-                String resource = jObj.optString("resource");
                 new LoginThread(host, port, serverName, resource, account, password).start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     class LoginThread extends Thread {

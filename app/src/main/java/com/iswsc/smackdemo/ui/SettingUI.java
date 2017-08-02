@@ -2,7 +2,6 @@ package com.iswsc.smackdemo.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
@@ -21,7 +20,7 @@ public class SettingUI extends BaseActivity {
 
     private TextView mHost;
     private TextView mPort;
-    private TextView mServerName;
+    private TextView mServiceName;
     private TextView mResource;
 
     @Override
@@ -38,7 +37,7 @@ public class SettingUI extends BaseActivity {
     protected void findViewById() {
         mHost = (TextView) findViewById(R.id.host);
         mPort = (TextView) findViewById(R.id.port);
-        mServerName = (TextView) findViewById(R.id.servername);
+        mServiceName = (TextView) findViewById(R.id.servicename);
         mResource = (TextView) findViewById(R.id.resource);
     }
 
@@ -55,7 +54,7 @@ public class SettingUI extends BaseActivity {
                 JSONObject jObj = new JSONObject(serverInfo);
                 mHost.setText(jObj.optString("host"));
                 mPort.setText(jObj.optString("port"));
-                mServerName.setText(jObj.optString("serverName"));
+                mServiceName.setText(jObj.optString("serviceName"));
                 mResource.setText(jObj.optString("resource"));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -68,14 +67,14 @@ public class SettingUI extends BaseActivity {
         super.onPause();
         String host = mHost.getText().toString().trim();
         String port = mPort.getText().toString().trim();
-        String serverName = mServerName.getText().toString().trim();
+        String serviceName = mServiceName.getText().toString().trim();
         String resource = mResource.getText().toString().trim();
 
         JSONObject jObj = new JSONObject();
         try {
             jObj.put("host", host);
             jObj.put("port", port);
-            jObj.put("serverName", serverName);
+            jObj.put("serviceName", serviceName);
             jObj.put("resource", resource);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,5 +1,9 @@
 package com.iswsc.smackdemo.util;
 
+import android.content.Context;
+
+import com.iswsc.smackdemo.MyApp;
+
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.SmackException;
@@ -9,6 +13,7 @@ import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -19,6 +24,8 @@ import java.io.IOException;
  */
 
 public class XmppUtils {
+
+    private static final boolean DEBUG = true;
 
     private static XmppUtils instance;
     private XMPPTCPConnection connection;
@@ -33,11 +40,7 @@ public class XmppUtils {
     private XmppUtils() {
     }
 
-    public void init(String host, int port, String serviceName, String resource, StanzaListener packetListener, StanzaFilter packetFilter) {
-        this.host = host;
-        this.port = port;
-        this.serviceName = serviceName;
-        this.resource = resource;
+    public void setListener(StanzaListener packetListener, StanzaFilter packetFilter) {
         this.packetListener = packetListener;
         this.packetFilter = packetFilter;
     }
@@ -52,12 +55,18 @@ public class XmppUtils {
     private void createConnection() {
         XMPPTCPConnectionConfiguration configuration = null;
         try {
+            String serverInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
+            JSONObject jObj = new JSONObject(serverInfo);
+            host = jObj.optString("host");
+            port = jObj.optInt("port");
+            serviceName = jObj.optString("serviceName");
+            resource = jObj.optString("resource");
             configuration = XMPPTCPConnectionConfiguration.builder()
                     .setHost(host)
                     .setPort(port)
                     .setResource(resource)
                     .setServiceName(serviceName)
-                    .setDebuggerEnabled(true)
+                    .setDebuggerEnabled(DEBUG)
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .build();
             SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
@@ -83,6 +92,22 @@ public class XmppUtils {
         connection.connect();
         return connection;
     }
+
+
+    /**
+     * 是否已经登录
+     * @return
+     * @author by_wsc
+     * @email wscnydx@gmail.com
+     * @date 日期：2013-4-17 时间：下午11:03:14
+     */
+    public boolean isLogin(){
+        if(connection == null) return false;//连接未生成
+        else if(!connection.isConnected()) return false;//连接未生效
+        else if(!connection.isAuthenticated()) return false;//连接未认证
+        return true;
+    }
+
 
     public String loginXmpp(final String userName, final String password) {
         String result = XmppAction.ACTION_LOGIN_SUCCESS;

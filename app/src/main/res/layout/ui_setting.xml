@@ -61,9 +61,9 @@
                 android:text="服务名：" />
 
             <EditText
-                android:id="@+id/servername"
+                android:id="@+id/servicename"
                 style="@style/mm_16_back"
-                android:hint="请输入servername" />
+                android:hint="请输入servicename" />
         </LinearLayout>
 
         <LinearLayout
