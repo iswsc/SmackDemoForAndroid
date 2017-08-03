@@ -37,6 +37,7 @@ public class LoginUI extends BaseActivity {
 
     private LoginBroadcastReceiver mLoginBroadcastReceiver;
     private IntentFilter mIntentFilter;
+
     @Override
     public void onActivityListener(Bundle bundle) {
 
@@ -72,13 +73,14 @@ public class LoginUI extends BaseActivity {
         mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR_CONFLICT);
         mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED);
         mIntentFilter.addAction(XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST);
-        JacenUtils.registerLocalBroadcastReceiver(this,mLoginBroadcastReceiver,mIntentFilter);
+        mIntentFilter.addAction(XmppAction.ACTION_SERVICE_ERROR);
+        JacenUtils.registerLocalBroadcastReceiver(this, mLoginBroadcastReceiver, mIntentFilter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        JacenUtils.unRegisterLocalBroadcastReceiver(this,mLoginBroadcastReceiver);
+        JacenUtils.unRegisterLocalBroadcastReceiver(this, mLoginBroadcastReceiver);
     }
 
     @Override
@@ -145,23 +147,25 @@ public class LoginUI extends BaseActivity {
         return true;
     }
 
-    class LoginBroadcastReceiver extends BroadcastReceiver{
+    class LoginBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent != null){
+            if (intent != null) {
                 String action = intent.getAction();
                 JacenDialogUtils.dismissDialog();
-                if(XmppAction.ACTION_LOGIN_SUCCESS.equals(action)){
+                if (XmppAction.ACTION_LOGIN_SUCCESS.equals(action)) {
                     showToast("登录成功");
-                    JacenUtils.intentUI(LoginUI.this,MainUI.class,null,true);
-                }else if(XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED.equals(action)){
+                    JacenUtils.intentUI(LoginUI.this, MainUI.class, null, true);
+                } else if (XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED.equals(action)) {
                     showToast("密码错误");
-                }else if(XmppAction.ACTION_LOGIN_ERROR_CONFLICT.equals(action)){
+                } else if (XmppAction.ACTION_LOGIN_ERROR_CONFLICT.equals(action)) {
                     showToast("账号已登录，无法重复登录");
-                }else if(XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST.equals(action)){
+                } else if (XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST.equals(action)) {
                     showToast("无法连接到服务器: 不可达的主机名或地址.");
-                }else if(XmppAction.ACTION_LOGIN_ERROR.equals(action)){
+                } else if (XmppAction.ACTION_LOGIN_ERROR.equals(action)) {
+                    showToast("登录失败");
+                } else if (XmppAction.ACTION_SERVICE_ERROR.equals(action)) {
                     showToast("登录失败");
                 }
             }

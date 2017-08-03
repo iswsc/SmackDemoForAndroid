@@ -7,6 +7,7 @@ package com.iswsc.smackdemo.util;
  */
 
 public class XmppAction {
+    public static final String ACTION_SERVICE_ERROR = "com.iswsc.smackdemo.service.error";
     public static final String ACTION_LOGIN = "com.iswsc.smackdemo.login";
     public static final String ACTION_LOGIN_SUCCESS = "com.iswsc.smack.login.success";//登录成功
     public static final String ACTION_LOGIN_ERROR = "com.iswsc.smack.login.error";//登录失败

@@ -13,6 +13,7 @@ import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -40,7 +41,13 @@ public class XmppUtils {
     private XmppUtils() {
     }
 
-    public void setListener(StanzaListener packetListener, StanzaFilter packetFilter) {
+    public void init(StanzaListener packetListener, StanzaFilter packetFilter) throws Exception {
+        String serverInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
+        JSONObject jObj = new JSONObject(serverInfo);
+        host = jObj.optString("host");
+        port = jObj.optInt("port");
+        serviceName = jObj.optString("serviceName");
+        resource = jObj.optString("resource");
         this.packetListener = packetListener;
         this.packetFilter = packetFilter;
     }
@@ -55,12 +62,6 @@ public class XmppUtils {
     private void createConnection() {
         XMPPTCPConnectionConfiguration configuration = null;
         try {
-            String serverInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
-            JSONObject jObj = new JSONObject(serverInfo);
-            host = jObj.optString("host");
-            port = jObj.optInt("port");
-            serviceName = jObj.optString("serviceName");
-            resource = jObj.optString("resource");
             configuration = XMPPTCPConnectionConfiguration.builder()
                     .setHost(host)
                     .setPort(port)
@@ -96,15 +97,16 @@ public class XmppUtils {
 
     /**
      * 是否已经登录
+     *
      * @return
      * @author by_wsc
      * @email wscnydx@gmail.com
      * @date 日期：2013-4-17 时间：下午11:03:14
      */
-    public boolean isLogin(){
-        if(connection == null) return false;//连接未生成
-        else if(!connection.isConnected()) return false;//连接未生效
-        else if(!connection.isAuthenticated()) return false;//连接未认证
+    public boolean isLogin() {
+        if (connection == null) return false;//连接未生成
+        else if (!connection.isConnected()) return false;//连接未生效
+        else if (!connection.isAuthenticated()) return false;//连接未认证
         return true;
     }
 

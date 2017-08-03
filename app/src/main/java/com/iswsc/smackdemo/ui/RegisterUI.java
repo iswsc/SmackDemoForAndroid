@@ -3,6 +3,7 @@ package com.iswsc.smackdemo.ui;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,6 +37,9 @@ public class RegisterUI extends BaseActivity {
     private TextView mRegister;
     private TextView mSetting;
 
+    private RegisterBroadcastReceiver mRegisterBroadcastReceiver;
+    private IntentFilter mIntentFilter;
+
     @Override
     public void onActivityListener(Bundle bundle) {
 
@@ -62,6 +66,15 @@ public class RegisterUI extends BaseActivity {
     @Override
     protected void initData() {
         setTitle("注册");
+        mRegisterBroadcastReceiver = new RegisterBroadcastReceiver();
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_SUCCESS);
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR);
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_CONFLICT);
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_NOT_AUTHORIZED);
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_UNKNOWNHOST);
+        mIntentFilter.addAction(XmppAction.ACTION_SERVICE_ERROR);
+        JacenUtils.registerLocalBroadcastReceiver(this, mRegisterBroadcastReceiver, mIntentFilter);
     }
 
     @Override
@@ -112,7 +125,7 @@ public class RegisterUI extends BaseActivity {
         return true;
     }
 
-    class LoginBroadcastReceiver extends BroadcastReceiver {
+    class RegisterBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -129,6 +142,8 @@ public class RegisterUI extends BaseActivity {
                 }else if(XmppAction.ACTION_REGISTER_ERROR_UNKNOWNHOST.equals(action)){
 //                    showToast("无法连接到服务器: 不可达的主机名或地址.");
                 }else if(XmppAction.ACTION_REGISTER_ERROR.equals(action)){
+//                    showToast("登录失败");
+                }else if(XmppAction.ACTION_SERVICE_ERROR.equals(action)){
 //                    showToast("登录失败");
                 }
             }
