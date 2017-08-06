@@ -1,4 +1,4 @@
-package com.iswsc.smackdemo;
+package com.iswsc.smackdemo.app;
 
 import android.app.Application;
 import android.content.Context;

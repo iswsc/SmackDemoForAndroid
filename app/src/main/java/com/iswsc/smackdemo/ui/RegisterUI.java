@@ -47,7 +47,7 @@ public class RegisterUI extends BaseActivity {
 
     @Override
     protected void setContentView(Bundle savedInstanceState) {
-        setContentView(R.layout.ui_login);
+        setContentView(R.layout.ui_register);
     }
 
     @Override
@@ -71,8 +71,8 @@ public class RegisterUI extends BaseActivity {
         mIntentFilter.addAction(XmppAction.ACTION_REGISTER_SUCCESS);
         mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR);
         mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_CONFLICT);
-        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_NOT_AUTHORIZED);
-        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_UNKNOWNHOST);
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_FORBIDDEN);
+        mIntentFilter.addAction(XmppAction.ACTION_REGISTER_ERROR_JID_MALFORMED);
         mIntentFilter.addAction(XmppAction.ACTION_SERVICE_ERROR);
         JacenUtils.registerLocalBroadcastReceiver(this, mRegisterBroadcastReceiver, mIntentFilter);
     }
@@ -134,17 +134,17 @@ public class RegisterUI extends BaseActivity {
                 JacenDialogUtils.dismissDialog();
                 if(XmppAction.ACTION_REGISTER_SUCCESS.equals(action)){
                     showToast("注册成功");
-                    finish();
-                }else if(XmppAction.ACTION_REGISTER_ERROR_NOT_AUTHORIZED.equals(action)){
-//                    showToast("密码错误");
+                    JacenUtils.intentUI(RegisterUI.this, MainUI.class, null, true);
+                }else if(XmppAction.ACTION_REGISTER_ERROR_FORBIDDEN.equals(action)){
+                    showToast("禁止注册");
                 }else if(XmppAction.ACTION_REGISTER_ERROR_CONFLICT.equals(action)){
-//                    showToast("账号已登录，无法重复登录");
-                }else if(XmppAction.ACTION_REGISTER_ERROR_UNKNOWNHOST.equals(action)){
-//                    showToast("无法连接到服务器: 不可达的主机名或地址.");
+                    showToast("账号已存在");
+                }else if(XmppAction.ACTION_REGISTER_ERROR_JID_MALFORMED.equals(action)){
+                    showToast("账号格式不正确");
                 }else if(XmppAction.ACTION_REGISTER_ERROR.equals(action)){
-//                    showToast("登录失败");
+                    showToast("注册失败");
                 }else if(XmppAction.ACTION_SERVICE_ERROR.equals(action)){
-//                    showToast("登录失败");
+                    showToast("注册失败");
                 }
             }
         }

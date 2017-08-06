@@ -10,13 +10,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.base.BaseActivity;
+import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.util.JacenDialogUtils;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MySP;
 import com.iswsc.smackdemo.util.XmppAction;
-import com.iswsc.smackdemo.util.XmppUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +63,7 @@ public class LoginUI extends BaseActivity {
 
     @Override
     protected void initData() {
+        setBackViewGone();
         setTitle(R.string.app_name);
         initAccount();
         mLoginBroadcastReceiver = new LoginBroadcastReceiver();
@@ -158,7 +158,7 @@ public class LoginUI extends BaseActivity {
                     showToast("登录成功");
                     JacenUtils.intentUI(LoginUI.this, MainUI.class, null, true);
                 } else if (XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED.equals(action)) {
-                    showToast("密码错误");
+                    showToast("账号或密码错误");
                 } else if (XmppAction.ACTION_LOGIN_ERROR_CONFLICT.equals(action)) {
                     showToast("账号已登录，无法重复登录");
                 } else if (XmppAction.ACTION_LOGIN_ERROR_UNKNOWNHOST.equals(action)) {

@@ -79,6 +79,7 @@ public class SettingUI extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        showLogI(jObj.toString());
         MySP.write(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER, jObj.toString());
     }
 }

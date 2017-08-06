@@ -2,25 +2,19 @@ package com.iswsc.smackdemo.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.gesture.GestureUtils;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.MySP;
 import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.util.XmppUtils;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
-import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smackx.iqregister.AccountManager;
-import org.json.JSONObject;
 
 /**
  * @version 1.0
@@ -52,17 +46,26 @@ public class XmppService extends Service {
             String action = intent.getAction();
             String account = intent.getStringExtra("account");
             String password = intent.getStringExtra("password");
-            try {
-                XmppUtils.getInstance().init(myStanzaListener, myStanzaFilter);
-            } catch (Exception e) {
-                e.printStackTrace();
-                JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_SERVICE_ERROR, null);
-                return super.onStartCommand(intent, flags, startId);
-            }
 
             if (XmppAction.ACTION_LOGIN.equals(action)) {
+                try {
+                    XmppUtils.getInstance().distory();
+                    XmppUtils.getInstance().init(myStanzaListener, myStanzaFilter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_SERVICE_ERROR, null);
+                    return super.onStartCommand(intent, flags, startId);
+                }
                 new LoginThread(account, password).start();
             } else if (XmppAction.ACTION_REGISTER.equals(action)) {
+                try {
+                    XmppUtils.getInstance().distory();
+                    XmppUtils.getInstance().init(myStanzaListener, myStanzaFilter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_SERVICE_ERROR, null);
+                    return super.onStartCommand(intent, flags, startId);
+                }
                 new RegisterThread(account, password).start();
             }
         }
@@ -83,18 +86,8 @@ public class XmppService extends Service {
 
         @Override
         public void run() {
-            try {
-                AccountManager accountManager = AccountManager.getInstance(XmppUtils.getInstance().getConnection());
-                accountManager.createAccount(account, password);
-                JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_REGISTER_SUCCESS, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (e instanceof XMPPException.XMPPErrorException) {
-                    Log.e("XmppService", ((XMPPException.XMPPErrorException) e).getXMPPError().getCondition().toString());
-                    //TODO 错误日志待处理
-                }
-                JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_REGISTER_ERROR, null);
-            }
+            String action = XmppUtils.getInstance().registerXmpp(account, password);
+            JacenUtils.intentLocalBroadcastReceiver(XmppService.this, action, null);
         }
     }
 

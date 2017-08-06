@@ -1,8 +1,9 @@
 package com.iswsc.smackdemo.util;
 
-import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
-import com.iswsc.smackdemo.MyApp;
+import com.iswsc.smackdemo.app.MyApp;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SASLAuthentication;
@@ -10,10 +11,11 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
+import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-import org.json.JSONException;
+import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -139,6 +141,39 @@ public class XmppUtils {
         }
         return result;
     }
+
+
+    public String registerXmpp(final String account, final String password) {
+        String result = XmppAction.ACTION_REGISTER_SUCCESS;
+
+        try {
+            AccountManager accountManager = AccountManager.getInstance(getConnection());
+            accountManager.createAccount(account, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (e instanceof XMPPException.XMPPErrorException) {
+                if (((XMPPException.XMPPErrorException) e).getXMPPError() != null
+                        && ((XMPPException.XMPPErrorException) e).getXMPPError().getCondition() != null) {
+                    XMPPError.Condition condition = ((XMPPException.XMPPErrorException) e).getXMPPError().getCondition();
+                    if (TextUtils.equals(XMPPError.Condition.conflict.toString(), condition.toString())) {
+                        result = XmppAction.ACTION_REGISTER_ERROR_CONFLICT;
+                    }else if(TextUtils.equals(XMPPError.Condition.forbidden.toString(), condition.toString())) {
+                        result = XmppAction.ACTION_REGISTER_ERROR_FORBIDDEN;
+                    }else if(TextUtils.equals(XMPPError.Condition.jid_malformed.toString(), condition.toString())) {
+                        result = XmppAction.ACTION_REGISTER_ERROR_JID_MALFORMED;
+                    }else{
+                        result = XmppAction.ACTION_REGISTER_ERROR;
+                    }
+                }else{
+                    result = XmppAction.ACTION_REGISTER_ERROR;
+                }
+            }else{
+                result = XmppAction.ACTION_REGISTER_ERROR;
+            }
+        }
+        return result;
+    }
+
 
     public void distory() {
         if (connection != null) {
