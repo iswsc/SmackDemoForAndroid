@@ -11,40 +11,23 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@android:color/darker_gray" />
+
         <RadioGroup
             android:id="@+id/main_tab_group"
             android:layout_width="fill_parent"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:background="#fff8f8fa"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/main_tab_found"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/main_tab_found_selector"
-                android:gravity="center"
-                android:paddingTop="5dp"
-                android:text="@string/main_tab_found"
-                android:textColor="@color/main_tab_text"
-                android:textSize="10sp" />
-
-            <RadioButton
-                android:id="@+id/main_tab_send"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/main_tab_send_selector"
-                android:gravity="center"
-                android:paddingTop="5dp"
-                android:text="@string/main_tab_send"
-                android:textColor="@color/main_tab_text"
-                android:textSize="10sp" />
-
 
             <RadioButton
                 android:id="@+id/main_tab_message"
@@ -52,25 +35,32 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@drawable/main_tab_message_selector"
                 android:gravity="center"
-                android:paddingTop="5dp"
-                android:text="@string/main_tab_message"
-                android:textColor="@color/main_tab_text"
+                android:text="消息"
                 android:textSize="10sp" />
 
             <RadioButton
-                android:id="@+id/main_tab_me"
+                android:id="@+id/main_tab_friends"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@drawable/main_tab_me_selector"
                 android:gravity="center"
-                android:paddingTop="5dp"
-                android:text="@string/main_tab_me"
-                android:textColor="@color/main_tab_text"
+                android:text="好友"
                 android:textSize="10sp" />
+
+
+            <RadioButton
+                android:id="@+id/main_tab_setting"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="设置"
+                android:textSize="10sp" />
+
         </RadioGroup>
+    </LinearLayout>
 
 </LinearLayout>

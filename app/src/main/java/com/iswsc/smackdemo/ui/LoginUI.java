@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.iswsc.smackdemo.MainActivity;
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.base.BaseActivity;
 import com.iswsc.smackdemo.service.XmppService;
@@ -156,7 +157,7 @@ public class LoginUI extends BaseActivity {
                 JacenDialogUtils.dismissDialog();
                 if (XmppAction.ACTION_LOGIN_SUCCESS.equals(action)) {
                     showToast("登录成功");
-                    JacenUtils.intentUI(LoginUI.this, MainUI.class, null, true);
+                    JacenUtils.intentUI(LoginUI.this, MainActivity.class, null, true);
                 } else if (XmppAction.ACTION_LOGIN_ERROR_NOT_AUTHORIZED.equals(action)) {
                     showToast("账号或密码错误");
                 } else if (XmppAction.ACTION_LOGIN_ERROR_CONFLICT.equals(action)) {
