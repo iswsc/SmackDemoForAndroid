@@ -1,32 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_linear"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:text="我是正面"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/right"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/main_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:text="我是"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-</android.support.v4.widget.DrawerLayout>
+        <RadioGroup
+            android:id="@+id/main_tab_group"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="#fff8f8fa"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/main_tab_found"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/main_tab_found_selector"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="@string/main_tab_found"
+                android:textColor="@color/main_tab_text"
+                android:textSize="10sp" />
+
+            <RadioButton
+                android:id="@+id/main_tab_send"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/main_tab_send_selector"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="@string/main_tab_send"
+                android:textColor="@color/main_tab_text"
+                android:textSize="10sp" />
+
+
+            <RadioButton
+                android:id="@+id/main_tab_message"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/main_tab_message_selector"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="@string/main_tab_message"
+                android:textColor="@color/main_tab_text"
+                android:textSize="10sp" />
+
+            <RadioButton
+                android:id="@+id/main_tab_me"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/main_tab_me_selector"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="@string/main_tab_me"
+                android:textColor="@color/main_tab_text"
+                android:textSize="10sp" />
+        </RadioGroup>
+
+</LinearLayout>
