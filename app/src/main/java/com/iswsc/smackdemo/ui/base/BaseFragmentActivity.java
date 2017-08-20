@@ -45,10 +45,11 @@ public class BaseFragmentActivity extends FragmentActivity {
             // 如果已经存在，则显示之前的，如果不存在，则创建新的
             if (map.containsKey(c.getSimpleName())) {
                 fragment = map.get(c.getSimpleName());
-                if (!TextUtils.isEmpty(type)) {
-                    Bundle bundle = new Bundle();
-                    fragment.setBundle(bundle);
-                }
+//                if (!TextUtils.isEmpty(type)) {
+//                    Bundle bundle = new Bundle();
+////                    fragment.setBundle(bundle);
+//                    fragment.setArguments(bundle);
+//                }
                 getSupportFragmentManager().beginTransaction().show(fragment)
                         .commitAllowingStateLoss();
             } else {

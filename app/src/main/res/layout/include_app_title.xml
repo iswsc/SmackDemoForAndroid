@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/app_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="10dp"
         android:src="@drawable/bnt_back" />
 
     <TextView
@@ -17,7 +18,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:textColor="@android:color/white"
         android:text="标题"
-        android:textSize="20sp" />
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 </RelativeLayout>

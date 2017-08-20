@@ -10,17 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.base.BaseActivity;
+import com.iswsc.smackdemo.ui.base.BaseActivity;
 import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.util.JacenDialogUtils;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MySP;
 import com.iswsc.smackdemo.util.XmppAction;
-import com.iswsc.smackdemo.util.XmppUtils;
 
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 

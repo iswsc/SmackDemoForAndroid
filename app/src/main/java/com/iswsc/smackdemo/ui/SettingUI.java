@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.base.BaseActivity;
+import com.iswsc.smackdemo.ui.base.BaseActivity;
 import com.iswsc.smackdemo.util.MySP;
 
 import org.json.JSONException;
