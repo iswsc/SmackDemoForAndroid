@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.iswsc.smackdemo.app.MyApp;
+import com.iswsc.smackdemo.vo.ContactVo;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SASLAuthentication;
@@ -13,12 +14,18 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @version 1.0
@@ -157,23 +164,37 @@ public class XmppUtils {
                     XMPPError.Condition condition = ((XMPPException.XMPPErrorException) e).getXMPPError().getCondition();
                     if (TextUtils.equals(XMPPError.Condition.conflict.toString(), condition.toString())) {
                         result = XmppAction.ACTION_REGISTER_ERROR_CONFLICT;
-                    }else if(TextUtils.equals(XMPPError.Condition.forbidden.toString(), condition.toString())) {
+                    } else if (TextUtils.equals(XMPPError.Condition.forbidden.toString(), condition.toString())) {
                         result = XmppAction.ACTION_REGISTER_ERROR_FORBIDDEN;
-                    }else if(TextUtils.equals(XMPPError.Condition.jid_malformed.toString(), condition.toString())) {
+                    } else if (TextUtils.equals(XMPPError.Condition.jid_malformed.toString(), condition.toString())) {
                         result = XmppAction.ACTION_REGISTER_ERROR_JID_MALFORMED;
-                    }else{
+                    } else {
                         result = XmppAction.ACTION_REGISTER_ERROR;
                     }
-                }else{
+                } else {
                     result = XmppAction.ACTION_REGISTER_ERROR;
                 }
-            }else{
+            } else {
                 result = XmppAction.ACTION_REGISTER_ERROR;
             }
         }
         return result;
     }
 
+    public List<ContactVo> getContactList() {
+        List<ContactVo> list = new ArrayList<ContactVo>();
+        Roster roster = Roster.getInstanceFor(connection);
+        Set<RosterEntry> entrys = roster.getEntries();
+        ContactVo vo;
+        for (RosterEntry entry : entrys) {
+            vo = new ContactVo();
+            vo.setFullJid(entry.getUser());
+            vo.setNickName(entry.getName());
+//            vo.setStatus(entry.getStatus());
+            list.add(vo);
+        }
+        return list;
+    }
 
     public void distory() {
         if (connection != null) {

@@ -41,19 +41,6 @@ public class MainContactsFragment extends BaseFragment {
         setTitle("好友");
         setBackViewGone();
 
-        try {
-            Roster roster  =Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
-            Set<RosterEntry> entrys = roster.getEntries();
-            for (RosterEntry entry : entrys){
-                showLogI(entry.toString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XMPPException e) {
-            e.printStackTrace();
-        } catch (SmackException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
