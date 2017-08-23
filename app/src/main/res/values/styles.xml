@@ -17,6 +17,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/blue</item>
+    </style>
+
     <style name="ww">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -36,13 +41,27 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="mw_12" parent="mw">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="mm_16" parent="mm">
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="mm_12" parent="mm">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="ww_16" parent="ww">
         <item name="android:textSize">16sp</item>
+    </style>
 
+    <style name="ww_12" parent="ww">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="ww_10" parent="ww">
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="mw_16_back" parent="mw_16">

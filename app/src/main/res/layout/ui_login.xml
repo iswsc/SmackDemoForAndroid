@@ -19,17 +19,23 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/ww_16_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="账    号：" />
+            <!--<ImageView-->
+            <!--style="@style/ww_16_back"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@mipmap/icon_account"-->
+            <!--android:text="账    号：" />-->
 
             <EditText
                 android:id="@+id/account"
                 style="@style/mm_16_back"
+                android:drawableLeft="@mipmap/icon_account"
+                android:drawablePadding="20dp"
+                android:hint="input account"
                 android:imeOptions="actionNext"
-                android:hint="请输入account" />
+                android:digits="abcdefghijklmnopqrstuvwxyz123456789"
+                android:singleLine="true"
+                android:theme="@style/MyEditText" />
         </LinearLayout>
 
         <LinearLayout
@@ -38,17 +44,22 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/ww_16_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="密    码：" />
+            <!--<TextView-->
+            <!--style="@style/ww_16_back"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="密    码：" />-->
 
             <EditText
                 android:id="@+id/password"
-                android:imeOptions="actionGo"
                 style="@style/mm_16_back"
-                android:hint="请输入password" />
+                android:drawableLeft="@mipmap/icon_password"
+                android:drawablePadding="20dp"
+                android:hint="input password"
+                android:imeOptions="actionGo"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:theme="@style/MyEditText" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,12 +93,11 @@
             android:orientation="horizontal">
 
 
-            <TextView
+            <ImageView
                 android:id="@+id/setting"
-                style="@style/ww_16_back"
-                android:gravity="center"
+                style="@style/ww"
                 android:padding="10dp"
-                android:text="设置" />
+                android:src="@mipmap/icon_setting" />
 
         </LinearLayout>
     </LinearLayout>

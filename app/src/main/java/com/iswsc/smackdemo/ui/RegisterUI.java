@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
@@ -31,7 +32,7 @@ public class RegisterUI extends BaseActivity {
     private TextView mAccount;
     private TextView mPassword;
     private TextView mRegister;
-    private TextView mSetting;
+    private ImageView mSetting;
 
     private RegisterBroadcastReceiver mRegisterBroadcastReceiver;
     private IntentFilter mIntentFilter;
@@ -51,7 +52,7 @@ public class RegisterUI extends BaseActivity {
         mAccount = (TextView) findViewById(R.id.account);
         mPassword = (TextView) findViewById(R.id.password);
         mRegister = (TextView) findViewById(R.id.register);
-        mSetting = (TextView) findViewById(R.id.setting);
+        mSetting = (ImageView) findViewById(R.id.setting);
     }
 
     @Override

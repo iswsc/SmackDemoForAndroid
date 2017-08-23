@@ -27,7 +27,8 @@
             <EditText
                 android:id="@+id/host"
                 style="@style/mm_16_back"
-                android:hint="请输入host" />
+                android:hint="请输入host"
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,7 +46,8 @@
             <EditText
                 android:id="@+id/port"
                 style="@style/mm_16_back"
-                android:hint="请输入port" />
+                android:hint="请输入port"
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +65,8 @@
             <EditText
                 android:id="@+id/servicename"
                 style="@style/mm_16_back"
-                android:hint="请输入servicename" />
+                android:hint="请输入servicename"
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,7 +84,8 @@
             <EditText
                 android:id="@+id/resource"
                 style="@style/mm_16_back"
-                android:hint="请输入resource" />
+                android:hint="请输入resource"
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
     </LinearLayout>

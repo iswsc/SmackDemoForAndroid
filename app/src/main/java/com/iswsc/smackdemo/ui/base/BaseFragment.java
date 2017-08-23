@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
+import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MyToast;
 
 /**
@@ -16,12 +18,13 @@ import com.iswsc.smackdemo.util.MyToast;
  * jacen@iswsc.com
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements View.OnClickListener {
 
     public final String TAG = getClass().getSimpleName();
     private int contentViewId;
     private View contentView;
-    private TextView mAppTitle;
+    private TextView mTitleName;
+    private ImageView mBackView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,10 @@ public abstract class BaseFragment extends Fragment {
             return contentView;
         }
         contentView = inflater.inflate(contentViewId, container, false);
-        mAppTitle = (TextView) findViewById(R.id.app_title);
+        mTitleName = (TextView) findViewById(R.id.app_title);
+        mBackView = (ImageView) findViewById(R.id.app_back);
+        JacenUtils.setViewOnClickListener(this, mBackView);
+
         initView();
         setListener();
         initData();
@@ -57,7 +63,28 @@ public abstract class BaseFragment extends Fragment {
             return contentView.findViewById(resId);
         return null;
     }
+    public void setBackViewGone(){
+        if(mBackView != null){
+            mBackView.setVisibility(View.GONE);
+        }
+    }
+    public void setTitle(String title) {
+        if (mTitleName != null) {
+            mTitleName.setText(title);
+        }
+    }
 
+    public void setTitle(int resId) {
+        if (mTitleName != null) {
+            mTitleName.setText(resId);
+        }
+    }
+
+    public void setTitleColor(int resId) {
+        if (mTitleName != null) {
+            mTitleName.setTextColor(getResources().getColor(resId));
+        }
+    }
     protected abstract void setContentView();
 
     protected abstract void initView();
@@ -89,4 +116,6 @@ public abstract class BaseFragment extends Fragment {
     protected void showToast(String msg) {
         MyToast.showToastShort(getActivity(), msg);
     }
+
+
 }

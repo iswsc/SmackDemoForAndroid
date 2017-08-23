@@ -48,6 +48,7 @@ public class SettingUI extends BaseActivity {
 
     @Override
     protected void initData() {
+        setTitle("服务器设置");
         String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
         if (!TextUtils.isEmpty(serverInfo)) {
             try {

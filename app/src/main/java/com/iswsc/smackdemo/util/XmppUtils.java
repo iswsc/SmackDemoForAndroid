@@ -70,6 +70,7 @@ public class XmppUtils {
                     .setResource(resource)
                     .setServiceName(serviceName)
                     .setDebuggerEnabled(DEBUG)
+                    .setSendPresence(false)
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .build();
             SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
@@ -91,8 +92,6 @@ public class XmppUtils {
             }
         }
 
-        createConnection();
-        connection.connect();
         return connection;
     }
 
@@ -117,8 +116,9 @@ public class XmppUtils {
         String result = XmppAction.ACTION_LOGIN_SUCCESS;
 
         try {
-
-            getConnection().login(userName, password, resource);
+            createConnection();
+            connection.connect();
+            connection.login(userName, password, resource);
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("not-authorized")) {//用户名密码错误

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
@@ -32,7 +33,7 @@ public class LoginUI extends BaseActivity {
     private TextView mPassword;
     private TextView mLogin;
     private TextView mRegister;
-    private TextView mSetting;
+    private ImageView mSetting;
 
     private LoginBroadcastReceiver mLoginBroadcastReceiver;
     private IntentFilter mIntentFilter;
@@ -53,7 +54,7 @@ public class LoginUI extends BaseActivity {
         mPassword = (TextView) findViewById(R.id.password);
         mLogin = (TextView) findViewById(R.id.login);
         mRegister = (TextView) findViewById(R.id.register);
-        mSetting = (TextView) findViewById(R.id.setting);
+        mSetting = (ImageView) findViewById(R.id.setting);
     }
 
     @Override
