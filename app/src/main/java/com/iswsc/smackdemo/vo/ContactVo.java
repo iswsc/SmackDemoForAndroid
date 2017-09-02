@@ -14,8 +14,18 @@ public class ContactVo implements Parcelable {
     private String fullJid;
     private String avatar;
     private String status;
+    private String type;
 
-    public ContactVo(){}
+    public ContactVo() {
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getNickName() {
         return nickName;

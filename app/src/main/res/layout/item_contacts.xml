@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/avatar_default" />
+
+    <LinearLayout
+        android:layout_toRightOf="@id/avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/username"
+                style="@style/mw_14_back"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="游戏人间" />
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/ww_10_gray"
+                android:text="昨天" />
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/content"
+                style="@style/ww_12_gray"
+                android:layout_marginTop="1dp"
+                android:singleLine="true"
+                android:text="游戏人间" />
+    </LinearLayout>
+</RelativeLayout>

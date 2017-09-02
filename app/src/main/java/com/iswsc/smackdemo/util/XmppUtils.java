@@ -77,7 +77,7 @@ public class XmppUtils {
                     .setResource(resource)
                     .setServiceName(serviceName)
                     .setDebuggerEnabled(DEBUG)
-                    .setSendPresence(false)
+                    .setSendPresence(true)
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .build();
             SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
@@ -190,7 +190,8 @@ public class XmppUtils {
             vo = new ContactVo();
             vo.setFullJid(entry.getUser());
             vo.setNickName(entry.getName());
-//            vo.setStatus(entry.getStatus());
+//            vo.setStatus(entry.getStatus() != null ? entry.getStatus().toString() : "");
+            vo.setType(entry.getType().toString());
             list.add(vo);
         }
         return list;

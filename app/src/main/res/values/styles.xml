@@ -44,6 +44,9 @@
     <style name="mw_12" parent="mw">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="mw_14" parent="mw">
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="mm_16" parent="mm">
         <item name="android:textSize">16sp</item>
@@ -60,6 +63,12 @@
     <style name="ww_12" parent="ww">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="ww_14" parent="ww">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="ww_13" parent="ww">
+        <item name="android:textSize">13sp</item>
+    </style>
     <style name="ww_10" parent="ww">
         <item name="android:textSize">10sp</item>
     </style>
@@ -74,6 +83,21 @@
 
     <style name="ww_16_back" parent="ww_16">
         <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="ww_14_back" parent="ww_14">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="mw_14_back" parent="mw_14">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="ww_12_gray" parent="ww_12">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+    <style name="ww_10_gray" parent="ww_10">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+    <style name="ww_13_gray" parent="ww_13">
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="mw_20" parent="mw">
