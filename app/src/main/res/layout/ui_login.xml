@@ -33,7 +33,7 @@
                 android:drawablePadding="20dp"
                 android:hint="input account"
                 android:imeOptions="actionNext"
-                android:digits="abcdefghijklmnopqrstuvwxyz123456789"
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                 android:singleLine="true"
                 android:theme="@style/MyEditText" />
         </LinearLayout>
