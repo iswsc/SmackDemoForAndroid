@@ -1,4 +1,4 @@
-package com.iswsc.smackdemo.ui;
+package com.iswsc.smackdemo.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
