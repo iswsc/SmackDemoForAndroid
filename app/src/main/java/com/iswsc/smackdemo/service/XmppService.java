@@ -2,12 +2,14 @@ package com.iswsc.smackdemo.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.util.XmppUtils;
+import com.iswsc.smackdemo.vo.ContactVo;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -15,6 +17,9 @@ import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @version 1.0
@@ -47,26 +52,27 @@ public class XmppService extends Service {
             String account = intent.getStringExtra("account");
             String password = intent.getStringExtra("password");
 
-            if (XmppAction.ACTION_LOGIN.equals(action)) {
+            if (XmppAction.ACTION_LOGIN.equals(action)) {//登录
                 try {
                     XmppUtils.getInstance().distory();
                     XmppUtils.getInstance().init(myStanzaListener, myStanzaFilter);
+                    new LoginThread(account, password).start();
                 } catch (Exception e) {
                     e.printStackTrace();
                     JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_SERVICE_ERROR, null);
-                    return super.onStartCommand(intent, flags, startId);
                 }
-                new LoginThread(account, password).start();
-            } else if (XmppAction.ACTION_REGISTER.equals(action)) {
+
+            } else if (XmppAction.ACTION_REGISTER.equals(action)) {//注册
                 try {
                     XmppUtils.getInstance().distory();
                     XmppUtils.getInstance().init(myStanzaListener, myStanzaFilter);
+                    new RegisterThread(account, password).start();
                 } catch (Exception e) {
                     e.printStackTrace();
                     JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_SERVICE_ERROR, null);
-                    return super.onStartCommand(intent, flags, startId);
                 }
-                new RegisterThread(account, password).start();
+            } else if (XmppAction.ACTION_USER_CONTACT.equals(action)) {//获取联系人
+                new ContactThread().start();
             }
         }
 
@@ -104,6 +110,17 @@ public class XmppService extends Service {
         public void run() {
             String action = XmppUtils.getInstance().loginXmpp(account, password);
             JacenUtils.intentLocalBroadcastReceiver(XmppService.this, action, null);
+        }
+    }
+
+    class ContactThread extends Thread {
+
+        @Override
+        public void run() {
+            ArrayList<ContactVo> contactVoList = XmppUtils.getInstance().getContactList();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("contactVoList", contactVoList);
+            JacenUtils.intentLocalBroadcastReceiver(XmppService.this, XmppAction.ACTION_USER_CONTACT, bundle);
         }
     }
 

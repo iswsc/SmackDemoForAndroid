@@ -13,6 +13,7 @@ import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.vo.ContactVo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +26,17 @@ public class MainContactsAdapter extends RecyclerView.Adapter<MainContactsAdapte
 
     private Context context;
     private OnItemClickListener l;
-    private List<ContactVo> mList;
+    private ArrayList<ContactVo> mList;
 
-    public MainContactsAdapter(Context context, List<ContactVo> mList, OnItemClickListener l) {
+    public MainContactsAdapter(Context context, ArrayList<ContactVo> mList, OnItemClickListener l) {
         this.context = context;
         this.mList = mList;
         this.l = l;
+    }
+
+    public void updateList(ArrayList<ContactVo> mList){
+        this.mList = mList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,8 +55,8 @@ public class MainContactsAdapter extends RecyclerView.Adapter<MainContactsAdapte
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
         ContactVo vo = mList.get(position);
-        holder.mContent.setText(vo.getNickName());
-        holder.mUserName.setText(vo.getFullJid() + "[" + vo.getType() + "]");
+        holder.mUserName.setText(vo.getShowName());
+        holder.mContent.setText(vo.getFullJid() + "[" + vo.getType() + "]");
     }
 
 

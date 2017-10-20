@@ -19,6 +19,8 @@ import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -181,16 +183,23 @@ public class XmppUtils {
         return result;
     }
 
-    public List<ContactVo> getContactList() {
-        List<ContactVo> list = new ArrayList<ContactVo>();
+    public ArrayList<ContactVo> getContactList() {
+        ArrayList<ContactVo> list = new ArrayList<ContactVo>();
         Roster roster = Roster.getInstanceFor(connection);
         Set<RosterEntry> entrys = roster.getEntries();
         ContactVo vo;
         for (RosterEntry entry : entrys) {
             vo = new ContactVo();
             vo.setFullJid(entry.getUser());
-            vo.setNickName(entry.getName());
-//            vo.setStatus(entry.getStatus() != null ? entry.getStatus().toString() : "");
+            vo.setName(entry.getName());
+            try {
+               VCard vCard = VCardManager.getInstanceFor(getConnection()).loadVCard(entry.getUser());
+                vo.setFullName(vCard.getFirstName() + " " + vCard.getMiddleName() + " " + vCard.getLastName());
+                vo.setNickName(vCard.getNickName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            vo.setStatus(entry.getStatus() != null ? entry.getStatus().toString() : "");
             vo.setType(entry.getType().toString());
             list.add(vo);
         }

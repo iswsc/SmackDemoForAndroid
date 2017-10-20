@@ -2,21 +2,42 @@ package com.iswsc.smackdemo.vo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
+import java.io.Serializable;
 
 /**
  * Created by Jacen on 2017/8/23 11:22.
  * jacen@iswsc.com
  */
 
-public class ContactVo implements Parcelable {
+public class ContactVo implements Serializable/* implements Parcelable */{
 
     private String nickName;
+    private String name;
+    private String fullName;
     private String fullJid;
     private String avatar;
-    private String status;
-    private String type;
+    private String status;//在线状态
+    private String type;//好友关系类型
 
     public ContactVo() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getType() {
@@ -59,35 +80,47 @@ public class ContactVo implements Parcelable {
         this.status = status;
     }
 
-    public static final Creator<ContactVo> CREATOR = new Creator<ContactVo>() {
-        @Override
-        public ContactVo createFromParcel(Parcel in) {
-            return new ContactVo(in);
-        }
-
-        @Override
-        public ContactVo[] newArray(int size) {
-            return new ContactVo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getShowName() {
+        if(!TextUtils.isEmpty(nickName)){
+            return nickName;
+        } else if (!TextUtils.isEmpty(name))
+            return name;
+        return fullJid;
     }
 
-    protected ContactVo(Parcel in) {
-        nickName = in.readString();
-        fullJid = in.readString();
-        avatar = in.readString();
-        status = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(nickName);
-        dest.writeString(fullJid);
-        dest.writeString(avatar);
-        dest.writeString(status);
-    }
+//    public static final Creator<ContactVo> CREATOR = new Creator<ContactVo>() {
+//        @Override
+//        public ContactVo createFromParcel(Parcel in) {
+//            return new ContactVo(in);
+//        }
+//
+//        @Override
+//        public ContactVo[] newArray(int size) {
+//            return new ContactVo[size];
+//        }
+//    };
+//
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    protected ContactVo(Parcel in) {
+//        nickName = in.readString();
+//        name = in.readString();
+//        fullName = in.readString();
+//        fullJid = in.readString();
+//        avatar = in.readString();
+//        status = in.readString();
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeString(nickName);
+//        dest.writeString(name);
+//        dest.writeString(fullName);
+//        dest.writeString(fullJid);
+//        dest.writeString(avatar);
+//        dest.writeString(status);
+//    }
 }
