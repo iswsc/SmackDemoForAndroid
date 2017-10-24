@@ -9,9 +9,10 @@ import java.util.Map;
  */
 
 public enum ChatType {
+    error(-1, "文本"),
     text(0, "文本"),
-    image(0, "图片"),
-    audio(0, "语音");
+    image(1, "图片"),
+    audio(2, "语音");
     private int id;
     private String desc;
     private static final Map<Integer, ChatType> code2DeptType;
@@ -29,9 +30,9 @@ public enum ChatType {
         this.desc = desc;
     }
 
-    public static ChatType fromCode(int id) throws Exception {
+    public static ChatType fromCode(int id){
         if (code2DeptType.get(id) == null) {
-            throw new Exception();
+            return error;
         }
         return code2DeptType.get(id);
     }

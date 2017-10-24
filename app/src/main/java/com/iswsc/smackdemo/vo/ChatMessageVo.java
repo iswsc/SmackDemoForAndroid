@@ -1,5 +1,7 @@
 package com.iswsc.smackdemo.vo;
 
+import com.iswsc.smackdemo.enums.ChatType;
+
 /**
  * Created by Jacen on 2017/10/20 17:12.
  * jacen@iswsc.com
@@ -64,8 +66,8 @@ public class ChatMessageVo {
         this.imagePercent = imagePercent;
     }
 
-    public int getChatType() {
-        return chatType;
+    public ChatType getChatType() {
+        return ChatType.fromCode(chatType);
     }
 
     public void setChatType(int chatType) {
