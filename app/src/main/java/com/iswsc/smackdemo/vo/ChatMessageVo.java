@@ -2,21 +2,25 @@ package com.iswsc.smackdemo.vo;
 
 import com.iswsc.smackdemo.enums.ChatType;
 
+import java.io.Serializable;
+
 /**
  * Created by Jacen on 2017/10/20 17:12.
  * jacen@iswsc.com
  */
 
-public class ChatMessageVo {
+public class ChatMessageVo implements Serializable {
     private String messageID;
     private String chatJid;
-    private boolean showTime = false;//显示时间
-    private int messageStatus;//发送状态
-    private boolean isMe = false;//是不是我的发的信息
-    private int imagePercent;//图片上传百分比
-    private int chatType;//消息体类型 文字 语音 图片
     private String content;//消息内容
+    private int chatType;//消息体类型 文字 语音 图片
     private long sendTime;//发送时间戳
+    private boolean showTime = false;//显示时间
+    private boolean isMe = false;//是不是我的发的信息
+    private int messageStatus;//发送状态
+
+    private int imagePercent;//图片上传百分比
+
 
     public String getMessageID() {
         return messageID;
