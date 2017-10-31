@@ -12,6 +12,7 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
+import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.roster.Roster;
@@ -151,6 +152,19 @@ public class XmppUtils {
         return result;
     }
 
+    public boolean sendMessage(String chatId,String content){
+        Message msg = new Message();
+        try {
+            msg.setType(Message.Type.chat);
+            msg.setTo(chatId);
+            msg.setBody(content);
+            connection.sendStanza(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     public String registerXmpp(final String account, final String password) {
         String result = XmppAction.ACTION_REGISTER_SUCCESS;

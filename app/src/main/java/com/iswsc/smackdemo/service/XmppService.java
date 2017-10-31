@@ -9,6 +9,7 @@ import android.util.Log;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.util.XmppUtils;
+import com.iswsc.smackdemo.vo.ChatMessageVo;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import org.jivesoftware.smack.SmackException;
@@ -132,6 +133,15 @@ public class XmppService extends Service {
             if (packet instanceof Message) {//消息
                 Message msg = (Message) packet;
                 Log.i("XmppService", "Message = " + msg.toString());
+                if(Message.Type.chat.equals(msg.getType())){//单聊
+                    ChatMessageVo chatMessageVo = new ChatMessageVo();
+                    chatMessageVo.parseMessage(msg);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("chat",chatMessageVo);
+                    JacenUtils.intentLocalBroadcastReceiver(XmppService.this,XmppAction.ACTION_LOGIN,bundle);
+                }else if (Message.Type.groupchat.equals(msg.getType())){//群聊
+
+                }
             } else if (packet instanceof Presence) {//在线状态
                 Presence presence = (Presence) packet;
                 Log.i("XmppService", "Presence = " + presence.toString());

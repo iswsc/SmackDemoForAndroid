@@ -2,6 +2,8 @@ package com.iswsc.smackdemo.vo;
 
 import com.iswsc.smackdemo.enums.ChatType;
 
+import org.jivesoftware.smack.packet.Message;
+
 import java.io.Serializable;
 
 /**
@@ -92,5 +94,13 @@ public class ChatMessageVo implements Serializable {
 
     public void setSendTime(long sendTime) {
         this.sendTime = sendTime;
+    }
+
+    public ChatMessageVo parseMessage(Message msg){
+        setMessageID(msg.getStanzaId());
+        setChatJid(msg.getFrom());
+        setContent(msg.getBody());
+        setSendTime(System.currentTimeMillis());
+        return this;
     }
 }

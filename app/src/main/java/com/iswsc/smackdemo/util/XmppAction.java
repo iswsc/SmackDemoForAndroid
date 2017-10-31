@@ -22,5 +22,7 @@ public class XmppAction {
     public static final String ACTION_REGISTER_ERROR_CONFLICT = "com.iswsc.smack.register.conflict";//账号已存在
     public static final String ACTION_USER_CONTACT = "com.iswsc.smackdemo.contact";
 
+    public static final String ACTION_MESSAGE = "com.iswsc.smackdemo.message";
+
 
 }

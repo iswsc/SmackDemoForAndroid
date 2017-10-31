@@ -1,6 +1,11 @@
 package com.iswsc.smackdemo.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.icu.util.JapaneseCalendar;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,7 +17,12 @@ import android.widget.TextView;
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.ui.base.BaseActivity;
 import com.iswsc.smackdemo.util.JacenUtils;
+import com.iswsc.smackdemo.util.XmppAction;
+import com.iswsc.smackdemo.util.XmppUtils;
+import com.iswsc.smackdemo.vo.ChatMessageVo;
 import com.iswsc.smackdemo.vo.ContactVo;
+
+import org.jivesoftware.smackx.filetransfer.IBBTransferNegotiator;
 
 /**
  * Created by Jacen on 2017/10/19 18:02.
@@ -26,6 +36,7 @@ public class ChattingUI extends BaseActivity {
 
     private ContactVo mContactVo;
 
+    private ChatBroadcastReceiver mChatBroadcastReceiver;
 
     @Override
     public void onActivityListener(Bundle bundle) {
@@ -70,6 +81,16 @@ public class ChattingUI extends BaseActivity {
     protected void initData() {
         mContactVo = (ContactVo) getIntent().getSerializableExtra("vo");
         setTitle(mContactVo.getShowName());
+        mChatBroadcastReceiver = new ChatBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(XmppAction.ACTION_MESSAGE);
+        JacenUtils.registerLocalBroadcastReceiver(this, mChatBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JacenUtils.unRegisterLocalBroadcastReceiver(this,mChatBroadcastReceiver);
     }
 
     @Override
@@ -78,8 +99,20 @@ public class ChattingUI extends BaseActivity {
         switch (v.getId()) {
             case R.id.send://发送信息
                 String content = mConetnt.getText().toString().trim();
-
+                boolean result = XmppUtils.getInstance().sendMessage(mContactVo.getFullJid(),content);
+                if(result){
+                    mConetnt.setText("");
+                }
                 break;
+        }
+    }
+
+    class ChatBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ChatMessageVo vo = (ChatMessageVo) intent.getSerializableExtra("chat");
+            showToast(vo.getContent());
         }
     }
 }
