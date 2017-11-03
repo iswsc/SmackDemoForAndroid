@@ -89,8 +89,6 @@ public class XmppUtils {
         }
         connection = new XMPPTCPConnection(configuration);
         connection.setParsingExceptionCallback(new ExceptionLoggingCallback());
-        if (packetListener != null && packetFilter != null)
-            connection.addPacketSendingListener(packetListener, packetFilter);
     }
 
     public XMPPTCPConnection getConnection() throws IOException, XMPPException, SmackException {
@@ -128,6 +126,9 @@ public class XmppUtils {
         try {
             createConnection();
             connection.connect();
+            if (packetListener != null && packetFilter != null) {
+                connection.addPacketSendingListener(packetListener, packetFilter);
+            }
             connection.login(userName, password, resource);
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,11 +153,12 @@ public class XmppUtils {
         return result;
     }
 
-    public boolean sendMessage(String chatId,String content){
+    public boolean sendMessage(String chatId, String content) {
         Message msg = new Message();
         try {
             msg.setType(Message.Type.chat);
             msg.setTo(chatId);
+            msg.setFrom(getConnection().getUser());
             msg.setBody(content);
             connection.sendStanza(msg);
         } catch (Exception e) {
@@ -207,7 +209,7 @@ public class XmppUtils {
             vo.setFullJid(entry.getUser());
             vo.setName(entry.getName());
             try {
-               VCard vCard = VCardManager.getInstanceFor(getConnection()).loadVCard(entry.getUser());
+                VCard vCard = VCardManager.getInstanceFor(getConnection()).loadVCard(entry.getUser());
                 vo.setFullName(vCard.getFirstName() + " " + vCard.getMiddleName() + " " + vCard.getLastName());
                 vo.setNickName(vCard.getNickName());
             } catch (Exception e) {

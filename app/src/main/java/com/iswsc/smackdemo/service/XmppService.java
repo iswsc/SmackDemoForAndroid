@@ -129,22 +129,21 @@ public class XmppService extends Service {
 
         @Override
         public void processPacket(Stanza packet) throws SmackException.NotConnectedException {
+            Log.i("XmppService", "packet = " + packet.toString());
 
             if (packet instanceof Message) {//消息
                 Message msg = (Message) packet;
-                Log.i("XmppService", "Message = " + msg.toString());
                 if(Message.Type.chat.equals(msg.getType())){//单聊
                     ChatMessageVo chatMessageVo = new ChatMessageVo();
                     chatMessageVo.parseMessage(msg);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("chat",chatMessageVo);
-                    JacenUtils.intentLocalBroadcastReceiver(XmppService.this,XmppAction.ACTION_LOGIN,bundle);
+                    JacenUtils.intentLocalBroadcastReceiver(XmppService.this,XmppAction.ACTION_MESSAGE,bundle);
                 }else if (Message.Type.groupchat.equals(msg.getType())){//群聊
 
                 }
             } else if (packet instanceof Presence) {//在线状态
                 Presence presence = (Presence) packet;
-                Log.i("XmppService", "Presence = " + presence.toString());
             }
 
         }
