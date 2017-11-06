@@ -1,7 +1,6 @@
 package com.iswsc.smackdemo.util;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.vo.ContactVo;
@@ -26,8 +25,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -127,7 +124,7 @@ public class XmppUtils {
             createConnection();
             connection.connect();
             if (packetListener != null && packetFilter != null) {
-                connection.addPacketSendingListener(packetListener, packetFilter);
+                connection.addSyncStanzaListener(packetListener, packetFilter);
             }
             connection.login(userName, password, resource);
         } catch (Exception e) {
