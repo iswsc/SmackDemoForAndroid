@@ -37,7 +37,7 @@ public class MainMineFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        setTitle("我");
+        setTitle(R.string.mine);
         setBackViewGone();
 
         try {

@@ -23,8 +23,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public final String TAG = getClass().getSimpleName();
     private int contentViewId;
     private View contentView;
-    private TextView mTitleName;
     private ImageView mBackView;
+    private TextView mTitleName;
+    private TextView mRight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,10 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             return contentView;
         }
         contentView = inflater.inflate(contentViewId, container, false);
-        mTitleName = (TextView) findViewById(R.id.app_title);
         mBackView = (ImageView) findViewById(R.id.app_back);
-        JacenUtils.setViewOnClickListener(this, mBackView);
+        mTitleName = (TextView) findViewById(R.id.app_title);
+        mRight = (TextView) findViewById(R.id.app_right);
+        JacenUtils.setViewOnClickListener(this, mBackView, mRight);
 
         initView();
         setListener();
@@ -63,11 +65,23 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             return contentView.findViewById(resId);
         return null;
     }
-    public void setBackViewGone(){
-        if(mBackView != null){
+
+    public void setBackViewGone() {
+        if (mBackView != null) {
             mBackView.setVisibility(View.GONE);
         }
     }
+
+    public void setRightText(String text) {
+        if (mRight != null)
+            mRight.setText(text);
+    }
+
+    public void setRightText(int ids) {
+        if (mRight != null)
+            mRight.setText(ids);
+    }
+
     public void setTitle(String title) {
         if (mTitleName != null) {
             mTitleName.setText(title);
@@ -85,6 +99,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             mTitleName.setTextColor(getResources().getColor(resId));
         }
     }
+
     protected abstract void setContentView();
 
     protected abstract void initView();

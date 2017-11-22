@@ -60,7 +60,8 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
 
     @Override
     protected void initData() {
-        setTitle("好友");
+        setTitle(R.string.friends);
+        setRightText(R.string.add);
         setBackViewGone();
 //        mContactList = XmppUtils.getInstance().getContactList();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

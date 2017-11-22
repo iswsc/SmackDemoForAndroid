@@ -29,7 +29,7 @@ public class MainMessageFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        setTitle("消息");
+        setTitle(R.string.message);
         setBackViewGone();
     }
 
