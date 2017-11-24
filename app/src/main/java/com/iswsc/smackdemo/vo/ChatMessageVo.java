@@ -3,6 +3,8 @@ package com.iswsc.smackdemo.vo;
 import com.iswsc.smackdemo.enums.ChatType;
 
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Stanza;
+import org.jxmpp.util.XmppStringUtils;
 
 import java.io.Serializable;
 
@@ -12,6 +14,7 @@ import java.io.Serializable;
  */
 
 public class ChatMessageVo implements Serializable {
+
     private String messageID;
     private String chatJid;
     private String content;//消息内容
@@ -20,9 +23,17 @@ public class ChatMessageVo implements Serializable {
     private boolean showTime = false;//显示时间
     private boolean isMe = false;//是不是我的发的信息
     private int messageStatus;//发送状态
+    private int unRead;//未读
 
     private int imagePercent;//图片上传百分比
 
+    public int getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(int unRead) {
+        this.unRead = unRead;
+    }
 
     public String getMessageID() {
         return messageID;
@@ -96,9 +107,9 @@ public class ChatMessageVo implements Serializable {
         this.sendTime = sendTime;
     }
 
-    public ChatMessageVo parseMessage(Message msg){
+    public ChatMessageVo parseMessage(Message msg) {
         setMessageID(msg.getStanzaId());
-        setChatJid(msg.getFrom());
+        setChatJid(XmppStringUtils.parseBareJid(msg.getFrom()));
         setContent(msg.getBody());
         setSendTime(System.currentTimeMillis());
         return this;

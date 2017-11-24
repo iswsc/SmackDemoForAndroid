@@ -83,7 +83,7 @@ public class ChattingUI extends BaseActivity {
         setTitle(mContactVo.getShowName());
         mChatBroadcastReceiver = new ChatBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(XmppAction.ACTION_MESSAGE);
+        intentFilter.addAction(XmppAction.ACTION_MESSAGE + "_" + mContactVo.getFullJid());
         JacenUtils.registerLocalBroadcastReceiver(this, mChatBroadcastReceiver, intentFilter);
     }
 

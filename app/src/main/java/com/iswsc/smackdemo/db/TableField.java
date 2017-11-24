@@ -6,6 +6,7 @@ package com.iswsc.smackdemo.db;
  */
 
 public class TableField {
+
     public static String _ID                   = "_id";
     public static String _TABLE_CHAT           = "chat";
 
@@ -17,5 +18,6 @@ public class TableField {
     public static String _FIELD_SHOW_TIME      = "showtime";
     public static String _FIELD_IS_ME          = "isMe";
     public static String _FIELD_MESSAGE_STATUS = "messagestatus";
+    public static String _FIELD_UNREAD         = "_unread";
 
 }

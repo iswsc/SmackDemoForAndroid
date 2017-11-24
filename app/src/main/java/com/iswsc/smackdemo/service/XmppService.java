@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.iswsc.smackdemo.db.ChatMessageDataBase;
+import com.iswsc.smackdemo.enums.ChatType;
+import com.iswsc.smackdemo.enums.MessageStatus;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.util.XmppUtils;
@@ -18,9 +21,9 @@ import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
+import org.jxmpp.util.XmppStringUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @version 1.0
@@ -136,9 +139,16 @@ public class XmppService extends Service {
                 if(Message.Type.chat.equals(msg.getType())){//单聊
                     ChatMessageVo chatMessageVo = new ChatMessageVo();
                     chatMessageVo.parseMessage(msg);
+                    chatMessageVo.setChatType(ChatType.text.getId());
+                    chatMessageVo.setMe(false);
+                    chatMessageVo.setShowTime(ChatMessageDataBase.getInstance().isShowTime(chatMessageVo.getChatJid(),chatMessageVo.getSendTime()));
+                    chatMessageVo.setUnRead(1);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("chat",chatMessageVo);
+                    String action_chatting =  XmppAction.ACTION_MESSAGE + "_" + chatMessageVo.getChatJid();
                     JacenUtils.intentLocalBroadcastReceiver(XmppService.this,XmppAction.ACTION_MESSAGE,bundle);
+                    JacenUtils.intentLocalBroadcastReceiver(XmppService.this,action_chatting,bundle);
+                    ChatMessageDataBase.getInstance().saveChatMessage(chatMessageVo);
                 }else if (Message.Type.groupchat.equals(msg.getType())){//群聊
 
                 }
