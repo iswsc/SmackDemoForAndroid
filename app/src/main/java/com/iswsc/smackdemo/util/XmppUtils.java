@@ -3,6 +3,10 @@ package com.iswsc.smackdemo.util;
 import android.text.TextUtils;
 
 import com.iswsc.smackdemo.app.MyApp;
+import com.iswsc.smackdemo.db.ChatMessageDataBase;
+import com.iswsc.smackdemo.enums.ChatType;
+import com.iswsc.smackdemo.enums.MessageStatus;
+import com.iswsc.smackdemo.vo.ChatMessageVo;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -150,19 +154,26 @@ public class XmppUtils {
         return result;
     }
 
-    public boolean sendMessage(String chatId, String content) {
+    public ChatMessageVo sendMessage(String chatId, String content) {
+        ChatMessageVo chatMessageVo = new ChatMessageVo();
         Message msg = new Message();
         try {
             msg.setType(Message.Type.chat);
             msg.setTo(chatId);
             msg.setFrom(getConnection().getUser());
             msg.setBody(content);
+            chatMessageVo.parseMessage(msg);
+            chatMessageVo.setChatJid(chatId);
+            chatMessageVo.setChatType(ChatType.text.getId());
+            chatMessageVo.setMessageStatus(MessageStatus.success.getId());
+            chatMessageVo.setMe(true);
+            chatMessageVo.setShowTime(ChatMessageDataBase.getInstance().isShowTime(chatId,chatMessageVo.getSendTime()));
             connection.sendStanza(msg);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-        return true;
+        return chatMessageVo;
     }
 
     public String registerXmpp(final String account, final String password) {
@@ -203,7 +214,7 @@ public class XmppUtils {
         ContactVo vo;
         for (RosterEntry entry : entrys) {
             vo = new ContactVo();
-            vo.setFullJid(entry.getUser());
+            vo.setJid(entry.getUser());
             vo.setName(entry.getName());
             try {
                 VCard vCard = VCardManager.getInstanceFor(getConnection()).loadVCard(entry.getUser());

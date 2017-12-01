@@ -14,18 +14,32 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp">
 
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginRight="10dp"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/avatar_default" />
+        <RelativeLayout
+            android:id="@+id/rela"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/avatar_default" />
+            <TextView
+                android:id="@+id/unread"
+                style="@style/ww"
+                android:textSize="6sp"
+                android:gravity="center"
+                android:layout_alignRight="@id/avatar"
+                android:background="@mipmap/icon_red_round"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/avatar"
+            android:layout_toRightOf="@id/rela"
             android:orientation="vertical">
 
             <LinearLayout
@@ -43,7 +57,6 @@
 
                 <TextView
                     android:id="@+id/time"
-                    android:visibility="gone"
                     style="@style/ww_10_gray"
                     android:text="昨天" />
             </LinearLayout>

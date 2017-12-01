@@ -67,7 +67,7 @@ public class ChatMessageDataBase {
 
     public List<ChatMessageVo> getChatMessageListByChatJid(String chatJid) {
         List<ChatMessageVo> list = new ArrayList<>();
-        String sql = "select * from chat where chatjid=? order by _send_time";
+        String sql = "select * from chat where chatjid=? order by sendtime";
         Cursor cursor = db.rawQuery(sql, new String[]{chatJid});
         while (cursor.moveToNext()) {
             list.add(getChatMessageVoByCursor(cursor));
@@ -76,12 +76,20 @@ public class ChatMessageDataBase {
         return list;
     }
 
-    public List<ChatMessageVo> getChatMessageListEvent() {
-        List<ChatMessageVo> list = new ArrayList<>();
+    public void clearUnReadByJid(String chatJid){
+        ContentValues values = new ContentValues();
+        values.put(TableField._FIELD_UNREAD,0);
+        db.update(TableField._TABLE_CHAT,values,TableField._FIELD_CHAT_JID + "=?" ,new String[]{chatJid});
+    }
+
+    public ArrayList<ChatMessageVo> getChatMessageListEvent() {
+        ArrayList<ChatMessageVo> list = new ArrayList<>();
         String sql = "select * ,sum(_unread) total_unread from chat group by chatjid order by sendtime desc";
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
-            list.add(getChatMessageVoByCursor(cursor));
+            ChatMessageVo msg = getChatMessageVoByCursor(cursor);
+            msg.setUnRead(cursor.getInt(cursor.getColumnIndex("total_unread")));
+            list.add(msg);
         }
         cursor.close();
         return list;

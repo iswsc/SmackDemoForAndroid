@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.iswsc.smackdemo.db.ChatMessageDataBase;
@@ -137,6 +138,8 @@ public class XmppService extends Service {
             if (packet instanceof Message) {//消息
                 Message msg = (Message) packet;
                 if(Message.Type.chat.equals(msg.getType())){//单聊
+                    if(TextUtils.isEmpty(msg.getBody()))
+                        return;
                     ChatMessageVo chatMessageVo = new ChatMessageVo();
                     chatMessageVo.parseMessage(msg);
                     chatMessageVo.setChatType(ChatType.text.getId());

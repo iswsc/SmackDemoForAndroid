@@ -87,6 +87,9 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
         ContactVo vo = mContactList.get(position);
         Bundle bundle = new Bundle();
         bundle.putSerializable("vo", vo);
+        bundle.putString("chatJid",vo.getJid());
+        bundle.putString("nickName",vo.getNickName());
+
         JacenUtils.intentUI(getActivity(), ChattingUI.class, bundle, false);
     }
 

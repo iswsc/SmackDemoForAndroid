@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -393,7 +394,18 @@ public class JacenUtils {
         }
         return tmp.toString();
     }
-
+    public static String parseChatTimer(long time) {
+        time = time;//精确到秒值
+        String times = "";
+        long currTime = System.currentTimeMillis();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM月dd日 HH:mm");
+        if (currTime - time < 60 * 1000) {//一分钟
+            times = "刚刚";
+        } else {
+            times = formatter.format(time);
+        }
+        return times;
+    }
     /**
      * 转秒为时 00:00:00
      *

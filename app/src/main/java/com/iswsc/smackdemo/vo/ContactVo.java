@@ -1,7 +1,5 @@
 package com.iswsc.smackdemo.vo;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 
 import java.io.Serializable;
@@ -16,7 +14,7 @@ public class ContactVo implements Serializable/* implements Parcelable */{
     private String nickName;
     private String name;
     private String fullName;
-    private String fullJid;
+    private String jid;
     private String avatar;
     private String status;//在线状态
     private String type;//好友关系类型
@@ -56,12 +54,12 @@ public class ContactVo implements Serializable/* implements Parcelable */{
         this.nickName = nickName;
     }
 
-    public String getFullJid() {
-        return fullJid;
+    public String getJid() {
+        return jid;
     }
 
-    public void setFullJid(String fullJid) {
-        this.fullJid = fullJid;
+    public void setJid(String jid) {
+        this.jid = jid;
     }
 
     public String getAvatar() {
@@ -85,7 +83,7 @@ public class ContactVo implements Serializable/* implements Parcelable */{
             return nickName;
         } else if (!TextUtils.isEmpty(name))
             return name;
-        return fullJid;
+        return jid;
     }
 
 //    public static final Creator<ContactVo> CREATOR = new Creator<ContactVo>() {
@@ -109,7 +107,7 @@ public class ContactVo implements Serializable/* implements Parcelable */{
 //        nickName = in.readString();
 //        name = in.readString();
 //        fullName = in.readString();
-//        fullJid = in.readString();
+//        jid = in.readString();
 //        avatar = in.readString();
 //        status = in.readString();
 //    }
@@ -119,7 +117,7 @@ public class ContactVo implements Serializable/* implements Parcelable */{
 //        dest.writeString(nickName);
 //        dest.writeString(name);
 //        dest.writeString(fullName);
-//        dest.writeString(fullJid);
+//        dest.writeString(jid);
 //        dest.writeString(avatar);
 //        dest.writeString(status);
 //    }

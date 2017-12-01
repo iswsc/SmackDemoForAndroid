@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +12,6 @@ import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @version 1.0
@@ -56,7 +53,7 @@ public class MainContactsAdapter extends RecyclerView.Adapter<MainContactsAdapte
     public void onBindViewHolder(MyHolder holder, int position) {
         ContactVo vo = mList.get(position);
         holder.mUserName.setText(vo.getShowName());
-        holder.mContent.setText(vo.getFullJid() + "[" + vo.getType() + "]");
+        holder.mContent.setText(vo.getJid() + "[" + vo.getType() + "]");
     }
 
 
