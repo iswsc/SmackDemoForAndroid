@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+<TextView
+    android:id="@+id/time"
+    style="@style/ww_14"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    android:background="@mipmap/icon_chat_time"
+    android:gravity="center"
+    android:textColor="@color/white" />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="36dp"
+        android:src="@mipmap/avatar_default"
+        android:layout_height="36dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/content"
+        style="@style/ww_14_back"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_marginLeft="5dp"
+        android:autoLink="email|web"
+        android:background="@mipmap/icon_chat_left_bg"
+        android:gravity="center"
+        android:maxWidth="300dp"
+        android:minWidth="50dp" />
+</RelativeLayout>
+</LinearLayout>
