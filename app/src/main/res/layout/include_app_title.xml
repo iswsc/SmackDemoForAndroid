@@ -29,4 +29,13 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/app_add"
+        android:layout_width="48dp"
+        android:visibility="gone"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:src="@drawable/bnt_add" />
 </RelativeLayout>

@@ -37,7 +37,15 @@ public class MainMineFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        setTitle(R.string.mine);
+        try {
+            setTitle(getString(R.string.mine) + XmppUtils.getInstance().getConnection().getUser());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        }
         setBackViewGone();
 
         try {

@@ -25,7 +25,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     private View contentView;
     private ImageView mBackView;
     private TextView mTitleName;
-    private TextView mRight;
+    private TextView mRightText;
+    private ImageView mRightAdd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         contentView = inflater.inflate(contentViewId, container, false);
         mBackView = (ImageView) findViewById(R.id.app_back);
         mTitleName = (TextView) findViewById(R.id.app_title);
-        mRight = (TextView) findViewById(R.id.app_right);
-        JacenUtils.setViewOnClickListener(this, mBackView, mRight);
+        mRightText = (TextView) findViewById(R.id.app_right);
+        mRightAdd = (ImageView) findViewById(R.id.app_add);
+        JacenUtils.setViewOnClickListener(this, mBackView, mRightText,mRightAdd);
 
         initView();
         setListener();
@@ -66,6 +68,12 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         return null;
     }
 
+    public void showAddView(){
+        if (mRightAdd != null){
+            mRightAdd.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void setBackViewGone() {
         if (mBackView != null) {
             mBackView.setVisibility(View.GONE);
@@ -73,13 +81,13 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
     public void setRightText(String text) {
-        if (mRight != null)
-            mRight.setText(text);
+        if (mRightText != null)
+            mRightText.setText(text);
     }
 
     public void setRightText(int ids) {
-        if (mRight != null)
-            mRight.setText(ids);
+        if (mRightText != null)
+            mRightText.setText(ids);
     }
 
     public void setTitle(String title) {

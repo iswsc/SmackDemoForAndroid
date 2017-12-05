@@ -10,16 +10,19 @@ import com.iswsc.smackdemo.vo.ChatMessageVo;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
+import org.jivesoftware.smack.roster.RosterListener;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
@@ -50,11 +53,13 @@ public class XmppUtils {
     private String serviceName;
     private StanzaListener packetListener;
     private StanzaFilter packetFilter;
+    private RosterListener rosterListener;
+    private ConnectionListener connectionListener;
 
     private XmppUtils() {
     }
 
-    public void init(StanzaListener packetListener, StanzaFilter packetFilter) throws Exception {
+    public void init(StanzaListener packetListener, StanzaFilter packetFilter,RosterListener rosterListener,ConnectionListener connectionListener) throws Exception {
         String serverInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
         JSONObject jObj = new JSONObject(serverInfo);
         host = jObj.optString("host");
@@ -63,6 +68,8 @@ public class XmppUtils {
         resource = jObj.optString("resource");
         this.packetListener = packetListener;
         this.packetFilter = packetFilter;
+        this.rosterListener = rosterListener;
+        this.connectionListener = connectionListener;
     }
 
     public static XmppUtils getInstance() {
@@ -81,7 +88,7 @@ public class XmppUtils {
                     .setResource(resource)
                     .setServiceName(serviceName)
                     .setDebuggerEnabled(DEBUG)
-                    .setSendPresence(true)
+                    .setSendPresence(false)//不发在线状态 等UI处理完以后再发
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .build();
             SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
@@ -127,10 +134,17 @@ public class XmppUtils {
         try {
             createConnection();
             connection.connect();
+            connection.login(userName, password, resource);
             if (packetListener != null && packetFilter != null) {
                 connection.addSyncStanzaListener(packetListener, packetFilter);
             }
-            connection.login(userName, password, resource);
+            Roster.getInstanceFor(connection).addRosterListener(rosterListener);
+            connection.addConnectionListener(connectionListener);
+            //处理完所有监听器 发送在线状态 接收离线 也可在UI处理完毕后发送在线状态
+            //所有的离线信息 在没有发送在线状态的时候 服务器是不会推送给客户端的
+            // 除非服务器做过特殊处理 或者配置connectoin配置的时候选择了发送在线状态
+            Presence presence = new Presence(Presence.Type.available);
+            connection.sendStanza(presence);
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("not-authorized")) {//用户名密码错误
@@ -180,7 +194,11 @@ public class XmppUtils {
         String result = XmppAction.ACTION_REGISTER_SUCCESS;
 
         try {
-            AccountManager accountManager = AccountManager.getInstance(getConnection());
+            if(connection == null){
+                createConnection();
+                connection.connect();
+            }
+            AccountManager accountManager = AccountManager.getInstance(connection);
             accountManager.createAccount(account, password);
         } catch (Exception e) {
             e.printStackTrace();
