@@ -182,9 +182,6 @@ public class XmppService extends Service {
             Log.i("XmppService", "entriesAdded = " + addresses);
             for (String jid : addresses) {
                 try {
-                    Presence presence = new Presence(Presence.Type.subscribed);
-                    presence.setTo(jid);
-                    XmppUtils.getInstance().getConnection().sendStanza(presence);
                     addEntry(jid, XmppStringUtils.parseLocalpart(jid), "Friends");
                     Presence presence1 = new Presence(Presence.Type.subscribed);
                     presence1.setTo(jid);
