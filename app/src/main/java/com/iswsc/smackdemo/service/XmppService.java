@@ -29,6 +29,7 @@ import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.roster.RosterGroup;
 import org.jivesoftware.smack.roster.RosterListener;
+import org.jivesoftware.smack.roster.packet.RosterPacket;
 import org.jxmpp.util.XmppStringUtils;
 
 import java.io.IOException;
@@ -182,10 +183,21 @@ public class XmppService extends Service {
             Log.i("XmppService", "entriesAdded = " + addresses);
             for (String jid : addresses) {
                 try {
+                    Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
+                    RosterEntry entry = roster.getEntry(jid);
+                    if(entry != null && entry.getType() == RosterPacket.ItemType.to){
+                        Presence presence1 = new Presence(Presence.Type.subscribed);
+                        presence1.setTo(jid);
+                        XmppUtils.getInstance().getConnection().sendStanza(presence1);
+                        return;
+                    }
                     addEntry(jid, XmppStringUtils.parseLocalpart(jid), "Friends");
                     Presence presence1 = new Presence(Presence.Type.subscribed);
                     presence1.setTo(jid);
                     XmppUtils.getInstance().getConnection().sendStanza(presence1);
+                    Presence presence2 = new Presence(Presence.Type.subscribe);
+                    presence2.setTo(jid);
+                    XmppUtils.getInstance().getConnection().sendStanza(presence2);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (XMPPException e) {
@@ -305,8 +317,6 @@ public class XmppService extends Service {
                     e.printStackTrace();
                 }
             }
-
-
             RosterGroup rosterGroup = roster.getGroup(group);
             if (rosterGroup == null) {
                 rosterGroup = roster.createGroup(group);
