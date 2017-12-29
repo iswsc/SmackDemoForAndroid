@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.adapter.listener.ChatAdapterListener;
+import com.iswsc.smackdemo.adapter.listener.IViewItem;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
@@ -21,17 +20,18 @@ import com.iswsc.smackdemo.vo.ChatMessageVo;
  * Created by Jacen on 2017/12/28 22:24.
  */
 
-public class ChatErrorListenerImpl implements ChatAdapterListener {
+public class ChatErrorListenerImpl implements IViewItem {
     
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(Context context, LayoutInflater mInflater, ViewGroup parent, OnItemClickListener l) {
-        View left_text = mInflater.inflate( R.layout.item_chat_text_error, parent,false);
+    public RecyclerView.ViewHolder onCreateViewHolder(Context context, ViewGroup parent, OnItemClickListener l) {
+        View left_text = LayoutInflater.from(context).inflate( R.layout.item_chat_text_error, parent,false);
         return new ErrorHolder(left_text, l);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, ChatMessageVo vo) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, Object data) {
         ErrorHolder h = (ErrorHolder) holder;
+        ChatMessageVo vo = (ChatMessageVo) data;
         h.mTime.setText(JacenUtils.parseChatTimer(vo.getSendTime()));
         h.mTime.setVisibility(vo.isShowTime() ? View.VISIBLE : View.GONE);
         h.mContent.setText(vo.getContent());

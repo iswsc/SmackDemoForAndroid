@@ -2,7 +2,6 @@ package com.iswsc.smackdemo.adapter.listener.impl;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.HideReturnsTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.adapter.listener.ChatAdapterListener;
+import com.iswsc.smackdemo.adapter.listener.IViewItem;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
@@ -22,21 +21,21 @@ import com.iswsc.smackdemo.vo.ChatMessageVo;
  * Created by Jacen on 2017/12/28 22:24.
  */
 
-public class ChatLeftTextListenerImpl implements ChatAdapterListener {
+public class ChatLeftTextViewItemImpl implements IViewItem {
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(Context context, LayoutInflater mInflater, ViewGroup parent, OnItemClickListener l) {
-        View left_text = mInflater.inflate( R.layout.item_chat_text_left, parent,false);
+    public RecyclerView.ViewHolder onCreateViewHolder(Context context, ViewGroup parent, OnItemClickListener l) {
+        View left_text = LayoutInflater.from(context).inflate( R.layout.item_chat_text_left, parent,false);
         return new LeftTextHolder(left_text, l);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, ChatMessageVo vo) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, Object data) {
         LeftTextHolder h = (LeftTextHolder) holder;
+        ChatMessageVo vo = (ChatMessageVo) data;
         h.mTime.setText(JacenUtils.parseChatTimer(vo.getSendTime()));
         h.mTime.setVisibility(vo.isShowTime() ? View.VISIBLE : View.GONE);
         h.mContent.setText(vo.getContent());
-        Log.d("ChatAdapter" ,"LeftTextHolder " + vo.getContent());
     }
 
     class LeftTextHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

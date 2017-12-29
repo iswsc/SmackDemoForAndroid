@@ -3,24 +3,16 @@ package com.iswsc.smackdemo.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.adapter.listener.ChatAdapterListener;
-import com.iswsc.smackdemo.adapter.listener.impl.ChatLeftTextListenerImpl;
-import com.iswsc.smackdemo.adapter.listener.impl.ChatRightTextListenerImpl;
+import com.iswsc.smackdemo.adapter.listener.IViewItem;
+import com.iswsc.smackdemo.adapter.listener.impl.ChatLeftTextViewItemImpl;
+import com.iswsc.smackdemo.adapter.listener.impl.ChatRightTextViewItemImpl;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
-import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @version 1.0
@@ -33,23 +25,23 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private OnItemClickListener l;
     private List<ChatMessageVo> mList;
-    private LayoutInflater mInflater;
+//    private LayoutInflater mInflater;
 
     //    private final int MESSAGE_ERROR = -1;
     private final int MESSAGE_LEFT_TEXT = 1;
     private final int MESSAGE_RIGHT_TEXT = 2;
 
-    private SparseArray<ChatAdapterListener> map;
+    private SparseArray<IViewItem> sparseArray;
 
 
     public ChatAdapter(Context context, List<ChatMessageVo> mList, OnItemClickListener l) {
         this.context = context;
         this.mList = mList;
         this.l = l;
-        mInflater = LayoutInflater.from(context);
-        map = new SparseArray<ChatAdapterListener>();
-        map.put(MESSAGE_LEFT_TEXT,new ChatLeftTextListenerImpl());
-        map.put(MESSAGE_RIGHT_TEXT,new ChatRightTextListenerImpl());
+//        mInflater = LayoutInflater.from(context);
+        sparseArray = new SparseArray<IViewItem>();
+        sparseArray.put(MESSAGE_LEFT_TEXT,new ChatLeftTextViewItemImpl());
+        sparseArray.put(MESSAGE_RIGHT_TEXT,new ChatRightTextViewItemImpl());
     }
 
     public void updateList(ArrayList<ChatMessageVo> mList) {
@@ -62,30 +54,24 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mList = new ArrayList<>();
         }
         mList.add(vo);
-        notifyItemInserted(mList.size() - 1);
+//        notifyItemInserted(mList.size() - 1);
         notifyItemChanged(mList.size() - 1);
     }
 
     @Override
     public int getItemCount() {
-        if (mList != null)
-            return mList.size();
-        return 0;
+        return mList == null ? 0 : mList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         ChatMessageVo vo = mList.get(position);
-        if (vo.isMe()) {
-            return MESSAGE_RIGHT_TEXT;
-        } else {
-            return MESSAGE_LEFT_TEXT;
-        }
+        return vo.isMe() ? vo.getChatType().getRight() : vo.getChatType().getLeft();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return map.get(viewType).onCreateViewHolder(context,mInflater,parent,l);
+        return sparseArray.get(viewType).onCreateViewHolder(context,parent,l);
 //        switch (viewType) {
 //            case MESSAGE_LEFT_TEXT:
 //                View left_text = mInflater.from(context).inflate(R.layout.item_chat_text_left, parent, false);
@@ -102,7 +88,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ChatMessageVo vo = mList.get(position);
-        map.get(getItemViewType(position)).onBindViewHolder(holder,vo);
+        sparseArray.get(getItemViewType(position)).onBindViewHolder(holder,vo);
 //        if(holder instanceof LeftTextHolder){
 //            leftTextContent((LeftTextHolder) holder,vo);
 //        }else if(holder instanceof RightTextHolder){
