@@ -9,11 +9,13 @@ import java.util.Map;
  */
 
 public enum ChatType {
-    error(-1, "文本"),
-    text(0, "文本"),
-    image(1, "图片"),
-    audio(2, "语音");
+    error(-1, -1,-1,"文本"),
+    text(0, 1,2,"文本"),
+    image(1,3,4, "图片"),
+    audio(2, 5,6,"语音");
     private int id;
+    private int left;
+    private int right;
     private String desc;
     private static final Map<Integer, ChatType> code2DeptType;
 
@@ -25,9 +27,11 @@ public enum ChatType {
         }
     }
 
-    ChatType(int id, String desc) {
+    ChatType(int id,int left,int right, String desc) {
         this.id = id;
         this.desc = desc;
+        this.left = left;
+        this.right = right;
     }
 
     public static ChatType fromCode(int id){
@@ -51,5 +55,21 @@ public enum ChatType {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public int getLeft() {
+        return left;
+    }
+
+    public void setLeft(int left) {
+        this.left = left;
+    }
+
+    public int getRight() {
+        return right;
+    }
+
+    public void setRight(int right) {
+        this.right = right;
     }
 }
