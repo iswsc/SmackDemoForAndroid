@@ -23,7 +23,7 @@ import com.iswsc.smackdemo.util.JacenUtils;
 
 public class LoginUI extends BaseActivity implements ILoginContract.View {
 
-//    private ILoginContract.Presenter mPresenter;
+    private ILoginContract.Presenter mPresenter;
 
     private EditText mAccount;
 
@@ -46,8 +46,8 @@ public class LoginUI extends BaseActivity implements ILoginContract.View {
     @Override
     protected void setContentView(Bundle savedInstanceState) {
         setContentView(R.layout.ui_login);
-//        mPresenter = new LoginPresenter(this);
-//        mPresenter.init();
+        mPresenter = new LoginPresenter(this);
+        mPresenter.init();
     }
 
     @Override
@@ -73,13 +73,13 @@ public class LoginUI extends BaseActivity implements ILoginContract.View {
             case R.id.login:
                 String account = mAccount.getText().toString().trim();
                 String password = mPassword.getText().toString();
-//                mPresenter.toLogin(account,password);
+                mPresenter.toLogin(account,password);
                 break;
             case R.id.register:
-//                mPresenter.toRegister();
+                mPresenter.toRegister();
                 break;
             case R.id.setting:
-//                mPresenter.toSetting();
+                mPresenter.toSetting();
                 break;
         }
     }
@@ -87,13 +87,13 @@ public class LoginUI extends BaseActivity implements ILoginContract.View {
     @Override
     protected void onStart() {
         super.onStart();
-//        mPresenter.initAccount();
+        mPresenter.initAccount();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        mPresenter.destroy();
+        mPresenter.destroy();
         mAccount.setEnabled(false);
         mPassword.setEnabled(false);
     }
