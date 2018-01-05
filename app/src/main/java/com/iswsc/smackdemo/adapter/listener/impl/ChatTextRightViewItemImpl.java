@@ -21,7 +21,7 @@ import com.iswsc.smackdemo.vo.ChatMessageVo;
  * Created by Jacen on 2017/12/28 22:24.
  */
 
-public class ChatRightTextViewItemImpl implements IViewItem {
+public class ChatTextRightViewItemImpl implements IViewItem {
     
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(Context context, ViewGroup parent, OnItemClickListener l) {

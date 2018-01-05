@@ -104,11 +104,11 @@ public class JacenUtils {
         }
     }
 
-    public static void setViewOnClickListener(View.OnClickListener l, View... view) {
-        if (view == null || l == null) return;
+    public static void setViewOnClickListener(View.OnClickListener listener, View... view) {
+        if (view == null || listener == null) return;
         for (int i = 0; i < view.length; i++) {
             if (view[i] != null) {
-                view[i].setOnClickListener(l);
+                view[i].setOnClickListener(listener);
             }
         }
     }

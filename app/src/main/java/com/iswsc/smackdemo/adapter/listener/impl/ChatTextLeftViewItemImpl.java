@@ -21,7 +21,7 @@ import com.iswsc.smackdemo.vo.ChatMessageVo;
  * Created by Jacen on 2017/12/28 22:24.
  */
 
-public class ChatLeftTextViewItemImpl implements IViewItem {
+public class ChatTextLeftViewItemImpl implements IViewItem {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(Context context, ViewGroup parent, OnItemClickListener l) {
@@ -38,7 +38,7 @@ public class ChatLeftTextViewItemImpl implements IViewItem {
         h.mContent.setText(vo.getContent());
     }
 
-    class LeftTextHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class LeftTextHolder<D> extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView mTime;
         ImageView mAvatar;

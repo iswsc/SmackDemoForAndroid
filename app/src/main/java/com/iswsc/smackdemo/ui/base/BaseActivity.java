@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.listener.ActivityListener;
+import com.iswsc.smackdemo.mvp.base.BaseView;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MyToast;
 
@@ -90,17 +91,17 @@ public abstract class BaseActivity extends Activity implements ActivityListener 
         super.onStart();
     }
 
-    private void setActivityListener(Class clazz, ActivityListener listener) {
+    private static void setActivityListener(Class clazz, ActivityListener listener) {
         if (clazz == null) return;
         mListeners.put(clazz, listener);
     }
 
-    private void removeActivityListener(Class clazz) {
+    private static void removeActivityListener(Class clazz) {
         if (clazz == null) return;
         mListeners.remove(clazz);
     }
 
-    public void notifActivityListener(Class clazz, Bundle bundle) {
+    public static void notifActivityListener(Class clazz, Bundle bundle) {
         if (clazz != null && mListeners.get(clazz) != null) {
             mListeners.get(clazz).onActivityListener(bundle);
             return;
@@ -112,7 +113,7 @@ public abstract class BaseActivity extends Activity implements ActivityListener 
         }
     }
 
-    public void clearActivityListener() {
+    public static void clearActivityListener() {
         mListeners.clear();
     }
 
@@ -171,7 +172,9 @@ public abstract class BaseActivity extends Activity implements ActivityListener 
 
     protected abstract void setListener();
 
-    protected abstract void initData();
+    protected void initData(){
+
+    }
 
     protected void showLogV(String msg) {
         Log.v(TAG, msg);

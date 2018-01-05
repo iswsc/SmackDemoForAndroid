@@ -98,6 +98,12 @@ public class XmppService extends Service {
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        XmppUtils.getInstance().distory();
+    }
+
     class RegisterThread extends Thread {
 
         private String account;

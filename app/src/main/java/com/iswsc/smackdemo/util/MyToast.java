@@ -14,8 +14,7 @@ public class MyToast {
 			}
 			if (context != null) {
 				if (toast == null) {
-					toast = Toast
-							.makeText(context, message, Toast.LENGTH_SHORT);
+					toast = Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT);
 				} else {
 					toast.setText(message);
 				}
@@ -35,7 +34,7 @@ public class MyToast {
 			}
 			if (context != null) {
 				if (toast == null) {
-					toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
+					toast = Toast.makeText(context.getApplicationContext(), resId, Toast.LENGTH_SHORT);
 				} else {
 					toast.setText(resId);
 				}
@@ -55,7 +54,7 @@ public class MyToast {
 			}
 			if (context != null) {
 				if (toast == null) {
-					toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+					toast = Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_LONG);
 				} else {
 					toast.setText(message);
 				}
@@ -75,7 +74,7 @@ public class MyToast {
 			}
 			if (context != null) {
 				if (toast == null) {
-					toast = Toast.makeText(context, resId, Toast.LENGTH_LONG);
+					toast = Toast.makeText(context.getApplicationContext(), resId, Toast.LENGTH_LONG);
 				} else {
 					toast.setText(resId);
 				}

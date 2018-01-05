@@ -1,5 +1,6 @@
 package com.iswsc.smackdemo.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.enums.MainTab;
+import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.ui.base.BaseFragmentActivity;
 import com.iswsc.smackdemo.ui.fragment.MainContactsFragment;
 import com.iswsc.smackdemo.ui.fragment.MainMessageFragment;
@@ -66,6 +68,12 @@ public class MainUI extends BaseFragmentActivity {
                 setTab(MainTab.mine);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this,XmppService.class));
     }
 
     void setTab(MainTab tab) {

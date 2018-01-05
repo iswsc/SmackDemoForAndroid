@@ -20,7 +20,7 @@ import com.iswsc.smackdemo.vo.ChatMessageVo;
  * Created by Jacen on 2017/12/28 22:24.
  */
 
-public class ChatErrorListenerImpl implements IViewItem {
+public class ChatErrorViewItemImpl implements IViewItem {
     
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(Context context, ViewGroup parent, OnItemClickListener l) {

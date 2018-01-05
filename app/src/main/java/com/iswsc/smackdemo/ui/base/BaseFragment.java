@@ -1,5 +1,6 @@
 package com.iswsc.smackdemo.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -37,8 +38,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         showLogI("onCreateView");
         if (contentView != null) {
             ((ViewGroup) contentView.getParent()).removeView(contentView);
@@ -49,7 +49,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         mTitleName = (TextView) findViewById(R.id.app_title);
         mRightText = (TextView) findViewById(R.id.app_right);
         mRightAdd = (ImageView) findViewById(R.id.app_add);
-        JacenUtils.setViewOnClickListener(this, mBackView, mRightText,mRightAdd);
+        JacenUtils.setViewOnClickListener(this, mBackView, mRightText, mRightAdd);
 
         initView();
         setListener();
@@ -68,8 +68,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         return null;
     }
 
-    public void showAddView(){
-        if (mRightAdd != null){
+    public void showAddView() {
+        if (mRightAdd != null) {
             mRightAdd.setVisibility(View.VISIBLE);
         }
     }

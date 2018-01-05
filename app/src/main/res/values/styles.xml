@@ -44,6 +44,9 @@
     <style name="mw_12" parent="mw">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="mw_10" parent="mw">
+        <item name="android:textSize">10sp</item>
+    </style>
     <style name="mw_14" parent="mw">
         <item name="android:textSize">14sp</item>
     </style>

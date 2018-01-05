@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.listener.ActivityListener;
+import com.iswsc.smackdemo.ui.activity.AddFriendUI;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MyToast;
 
@@ -76,11 +77,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
         mTitleName = (TextView) findViewById(R.id.app_title);
         JacenUtils.setViewOnClickListener(this, mBackView);
     }
-    public void setBackViewGone(){
-        if(mBackView != null){
+
+    public void setBackViewGone() {
+        if (mBackView != null) {
             mBackView.setVisibility(View.GONE);
         }
     }
+
     @Override
     protected void onRestart() {
         showLogV("onRestart");
@@ -127,6 +130,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
                 break;
         }
     }
+
     @Override
     public void finish() {
         super.finish();
@@ -145,6 +149,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
         super.startActivity(intent);
         overridePendingTransition(R.anim.act_open_enter, R.anim.act_open_exit);
     }
+
     protected abstract void setContentView(Bundle savedInstanceState);
 
     protected abstract void findViewById();

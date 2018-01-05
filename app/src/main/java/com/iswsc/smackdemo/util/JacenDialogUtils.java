@@ -16,6 +16,7 @@ public class JacenDialogUtils {
 
 	private static ProgressDialog mDialog;
 
+	@Deprecated
 	public static void showDialog(Context mContext, String msg) {
 		dismissDialog();
 		mDialog = new ProgressDialog(mContext);
@@ -23,6 +24,16 @@ public class JacenDialogUtils {
 		mDialog.setCancelable(false);
 		mDialog.show();
 	}
+
+	public static ProgressDialog showDialog(String msg,Context mContext) {
+        ProgressDialog mDialog = new ProgressDialog(mContext);
+		mDialog.setMessage(msg);
+		mDialog.setCancelable(false);
+		mDialog.show();
+		return mDialog;
+	}
+
+
 
 	public static void dismissDialog() {
 		try {

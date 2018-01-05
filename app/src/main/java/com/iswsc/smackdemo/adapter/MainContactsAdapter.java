@@ -38,9 +38,7 @@ public class MainContactsAdapter extends RecyclerView.Adapter<MainContactsAdapte
 
     @Override
     public int getItemCount() {
-        if (mList != null)
-            return mList.size();
-        return 0;
+        return mList == null ? 0 : mList.size();
     }
 
     @Override
@@ -58,7 +56,6 @@ public class MainContactsAdapter extends RecyclerView.Adapter<MainContactsAdapte
 
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        View view;
         OnItemClickListener l;
 
         ImageView mAvatar;

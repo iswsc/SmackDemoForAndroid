@@ -131,7 +131,7 @@ public class RegisterUI extends BaseActivity {
                 JacenDialogUtils.dismissDialog();
                 if(XmppAction.ACTION_REGISTER_SUCCESS.equals(action)){
                     showToast("注册成功");
-                    JacenUtils.intentUI(RegisterUI.this, MainUI.class, null, true);
+                    finish();
                 }else if(XmppAction.ACTION_REGISTER_ERROR_FORBIDDEN.equals(action)){
                     showToast("禁止注册");
                 }else if(XmppAction.ACTION_REGISTER_ERROR_CONFLICT.equals(action)){

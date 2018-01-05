@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.adapter.MainContactsAdapter;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.service.XmppService;
+import com.iswsc.smackdemo.ui.activity.AddFriendUI;
 import com.iswsc.smackdemo.ui.activity.ChattingUI;
 import com.iswsc.smackdemo.ui.base.BaseFragment;
 import com.iswsc.smackdemo.util.JacenUtils;
@@ -37,6 +39,7 @@ import java.util.Set;
 
 public class MainContactsFragment extends BaseFragment implements OnItemClickListener {
 
+    private LinearLayout mSearchLinear;
     private RecyclerView mRecyclerView;
     private ArrayList<ContactVo> mContactList;
     private MainContactsAdapter mAdapter;
@@ -46,22 +49,23 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
     @Override
 
     protected void setContentView() {
-        setContentView(R.layout.include_recyclerview);
+        setContentView(R.layout.ui_main_contacts);
     }
 
     @Override
     protected void initView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        mSearchLinear = (LinearLayout) findViewById(R.id.search_linear);
     }
 
     @Override
     protected void setListener() {
+        JacenUtils.setViewOnClickListener(this,mSearchLinear);
     }
 
     @Override
     protected void initData() {
         setTitle(R.string.friends);
-        showAddView();
         setBackViewGone();
 //        mContactList = XmppUtils.getInstance().getContactList();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -80,12 +84,11 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.app_add:
-                showToast("添加好友");
+            case R.id.search_linear:
+                JacenUtils.intentUI(getActivity(), AddFriendUI.class,null,false);
                 break;
         }
     }
-
     @Override
     public void onItemClick(View view, int position) {
         ContactVo vo = mContactList.get(position);
