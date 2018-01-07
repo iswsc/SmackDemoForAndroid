@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
-import com.iswsc.smackdemo.ui.activity.SettingUI;
+import com.iswsc.smackdemo.mvp.ui.setting.SettingUI;
 import com.iswsc.smackdemo.ui.base.BaseActivity;
 import com.iswsc.smackdemo.util.JacenDialogUtils;
 import com.iswsc.smackdemo.util.JacenUtils;

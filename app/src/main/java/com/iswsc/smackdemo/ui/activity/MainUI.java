@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.enums.MainTab;
+import com.iswsc.smackdemo.mvp.ui.main.contacts.MainContactsFragment;
+import com.iswsc.smackdemo.mvp.ui.main.message.MainMessageFragment;
 import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.ui.base.BaseFragmentActivity;
-import com.iswsc.smackdemo.ui.fragment.MainContactsFragment;
-import com.iswsc.smackdemo.ui.fragment.MainMessageFragment;
 import com.iswsc.smackdemo.ui.fragment.MainMineFragment;
 import com.iswsc.smackdemo.util.JacenUtils;
 

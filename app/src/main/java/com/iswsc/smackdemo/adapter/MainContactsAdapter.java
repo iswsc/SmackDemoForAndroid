@@ -36,6 +36,10 @@ public class MainContactsAdapter extends RecyclerView.Adapter<MainContactsAdapte
         notifyDataSetChanged();
     }
 
+    public ContactVo getItem(int position){
+        return mList.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return mList == null ? 0 : mList.size();

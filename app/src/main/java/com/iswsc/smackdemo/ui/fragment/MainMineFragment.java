@@ -39,23 +39,10 @@ public class MainMineFragment extends BaseFragment {
     protected void initData() {
         try {
             setTitle(getString(R.string.mine) + XmppUtils.getInstance().getConnection().getUser());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XMPPException e) {
-            e.printStackTrace();
-        } catch (SmackException e) {
-            e.printStackTrace();
-        }
-        setBackViewGone();
-
-        try {
-            VCardManager vCardManager = VCardManager.getInstanceFor(XmppUtils.getInstance().getConnection());
-            VCard vCard = vCardManager.loadVCard();
-            vCard.getFirstName();
-            showLogI(vCard.getLastName());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        setBackViewGone();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ChatMessageDataBase {
     private SQLiteDatabase db;
 
     private ChatMessageDataBase() {
-        helper = new DbHelper(MyApp.mContext, "chat.db");
+        helper = new DbHelper(MyApp.mContext, "chat.db");//数据库名固定写死，仅为方便测试
         db = helper.getWritableDatabase();
     }
 

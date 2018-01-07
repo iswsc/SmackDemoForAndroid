@@ -16,12 +16,16 @@ import org.json.JSONObject;
  * jacen@iswsc.com
  */
 
-public class SettingUI extends BaseActivity {
+public class SettingUI extends BaseActivity implements ISettingContract.View{
+
+    private ISettingContract.Presenter mPresenter;
+
 
     private TextView mHost;
     private TextView mPort;
     private TextView mServiceName;
     private TextView mResource;
+
 
     @Override
     public void onActivityListener(Bundle bundle) {
@@ -31,6 +35,7 @@ public class SettingUI extends BaseActivity {
     @Override
     protected void setContentView(Bundle savedInstanceState) {
         setContentView(R.layout.ui_setting);
+        mPresenter = new SettingPresenter(this);
     }
 
     @Override
@@ -49,18 +54,7 @@ public class SettingUI extends BaseActivity {
     @Override
     protected void initData() {
         setTitle("服务器设置");
-        String serverInfo = MySP.readString(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
-        if (!TextUtils.isEmpty(serverInfo)) {
-            try {
-                JSONObject jObj = new JSONObject(serverInfo);
-                mHost.setText(jObj.optString("host"));
-                mPort.setText(jObj.optString("port"));
-                mServiceName.setText(jObj.optString("serviceName"));
-                mResource.setText(jObj.optString("resource"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        mPresenter.init();
     }
 
     @Override
@@ -70,17 +64,15 @@ public class SettingUI extends BaseActivity {
         String port = mPort.getText().toString().trim();
         String serviceName = mServiceName.getText().toString().trim();
         String resource = mResource.getText().toString().trim();
+        mPresenter.toSaveSetting(host,port,serviceName,resource);
 
-        JSONObject jObj = new JSONObject();
-        try {
-            jObj.put("host", host);
-            jObj.put("port", port);
-            jObj.put("serviceName", serviceName);
-            jObj.put("resource", resource);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        showLogI(jObj.toString());
-        MySP.write(this, MySP.FILE_APPLICATION, MySP.KEY_SERVER, jObj.toString());
+    }
+
+    @Override
+    public void showSetting(String host, String port, String serviceName, String resource) {
+        mHost.setText(host);
+        mPort.setText(port);
+        mServiceName.setText(serviceName);
+        mResource.setText(resource);
     }
 }
