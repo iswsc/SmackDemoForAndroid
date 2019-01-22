@@ -100,7 +100,7 @@ public class ChattingUI extends BaseActivity implements OnItemClickListener {
     protected void initData() {
         nickName = getIntent().getStringExtra("nickName");
         chatJid = getIntent().getStringExtra("chatJid");
-        setTitle(nickName);
+        setTitle(chatJid);
         mChatBroadcastReceiver = new ChatBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(XmppAction.ACTION_MESSAGE + "_" + chatJid);
