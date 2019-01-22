@@ -110,5 +110,6 @@ public class AddFriendUI extends BaseActivity implements OnItemClickListener {
         } catch (SmackException e) {
             e.printStackTrace();
         }
+        finish();
     }
 }

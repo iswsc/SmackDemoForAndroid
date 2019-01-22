@@ -1,6 +1,7 @@
 package com.iswsc.smackdemo.mvp.ui.main.contacts;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,11 +9,14 @@ import android.widget.LinearLayout;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.adapter.MainContactsAdapter;
+import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
+import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.ui.activity.AddFriendUI;
 import com.iswsc.smackdemo.ui.activity.ChattingUI;
 import com.iswsc.smackdemo.ui.base.BaseFragment;
 import com.iswsc.smackdemo.util.JacenUtils;
+import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import java.util.ArrayList;
@@ -22,13 +26,14 @@ import java.util.ArrayList;
  * jacen@iswsc.com
  */
 
-public class MainContactsFragment extends BaseFragment implements OnItemClickListener, IContactsContract.View {
+public class MainContactsFragment extends BaseFragment implements OnItemClickListener, IContactsContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private IContactsContract.Presenter mPresenter;
 
     private LinearLayout mSearchLinear;
     private RecyclerView mRecyclerView;
     private MainContactsAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void setContentView() {
@@ -39,6 +44,7 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
     protected void initView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mSearchLinear = (LinearLayout) findViewById(R.id.search_linear);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.mSwipeRefreshLayout);
         mPresenter = new MainContactsPresenter(this);
         mPresenter.init();
     }
@@ -46,6 +52,7 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
     @Override
     protected void setListener() {
         JacenUtils.setViewOnClickListener(this, mSearchLinear);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -81,10 +88,16 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
     @Override
     public void toUpdateList(ArrayList<ContactVo> mContactList) {
         mAdapter.updateList(mContactList);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void toChattingUI(Bundle bundle) {
         JacenUtils.intentUI(getActivity(), ChattingUI.class, bundle, false);
+    }
+
+    @Override
+    public void onRefresh() {
+        JacenUtils.intentService(MyApp.mContext, XmppService.class, XmppAction.ACTION_USER_CONTACT, null);
     }
 }
