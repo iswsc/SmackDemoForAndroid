@@ -1,9 +1,5 @@
 package com.iswsc.smackdemo.mvp.ui.main.contacts;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +9,10 @@ import android.widget.LinearLayout;
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.adapter.MainContactsAdapter;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
-import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.ui.activity.AddFriendUI;
 import com.iswsc.smackdemo.ui.activity.ChattingUI;
 import com.iswsc.smackdemo.ui.base.BaseFragment;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import java.util.ArrayList;
@@ -74,6 +68,7 @@ public class MainContactsFragment extends BaseFragment implements OnItemClickLis
         switch (v.getId()) {
             case R.id.search_linear:
                 JacenUtils.intentUI(getActivity(), AddFriendUI.class, null, false);
+                getActivity().overridePendingTransition(R.anim.act_open_enter_bottom_top, R.anim.act_motionless);
                 break;
         }
     }

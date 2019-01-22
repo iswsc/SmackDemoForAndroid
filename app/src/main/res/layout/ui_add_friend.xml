@@ -21,6 +21,7 @@
             android:drawablePadding="5dp"
             android:hint="@string/search"
             android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:padding="5dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -33,7 +34,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" />

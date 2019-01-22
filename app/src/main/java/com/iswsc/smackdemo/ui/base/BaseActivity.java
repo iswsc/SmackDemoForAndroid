@@ -7,13 +7,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.listener.ActivityListener;
-import com.iswsc.smackdemo.mvp.base.BaseView;
+import com.iswsc.smackdemo.ui.activity.AddFriendUI;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MyToast;
 
@@ -41,7 +40,7 @@ public abstract class BaseActivity extends Activity implements ActivityListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         activitys.add(this);
 
         setActivityListener(getClass(), this);
@@ -127,7 +126,6 @@ public abstract class BaseActivity extends Activity implements ActivityListener 
     protected void onResume() {
         showLogV("onResume");
         super.onResume();
-
     }
 
     @Override
@@ -228,7 +226,12 @@ public abstract class BaseActivity extends Activity implements ActivityListener 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.act_close_enter, R.anim.act_close_exit);
+        if(this instanceof AddFriendUI){
+            overridePendingTransition(R.anim.act_motionless,R.anim.act_close_top_bottom);
+
+        }else{
+            overridePendingTransition(R.anim.act_close_enter, R.anim.act_close_exit);
+        }
 
     }
 

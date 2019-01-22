@@ -21,6 +21,9 @@ public class ContactVo implements Serializable/* implements Parcelable */{
 
     public ContactVo() {
     }
+    public ContactVo(String jid) {
+        this.jid = jid;
+    }
 
     public String getName() {
         return name;
@@ -86,7 +89,20 @@ public class ContactVo implements Serializable/* implements Parcelable */{
         return jid;
     }
 
-//    public static final Creator<ContactVo> CREATOR = new Creator<ContactVo>() {
+    @Override
+    public String toString() {
+        return "ContactVo{" +
+                "nickName='" + nickName + '\'' +
+                ", name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", jid='" + jid + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", status='" + status + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
+
+    //    public static final Creator<ContactVo> CREATOR = new Creator<ContactVo>() {
 //        @Override
 //        public ContactVo createFromParcel(Parcel in) {
 //            return new ContactVo(in);

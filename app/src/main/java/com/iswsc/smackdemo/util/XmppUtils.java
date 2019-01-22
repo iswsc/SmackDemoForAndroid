@@ -1,6 +1,7 @@
 package com.iswsc.smackdemo.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.db.ChatMessageDataBase;
@@ -26,12 +27,17 @@ import org.jivesoftware.smack.roster.RosterListener;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
+import org.jivesoftware.smackx.search.ReportedData;
+import org.jivesoftware.smackx.search.UserSearchManager;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jivesoftware.smackx.xdata.Form;
 import org.json.JSONObject;
+import org.jxmpp.util.XmppStringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -56,10 +62,12 @@ public class XmppUtils {
     private RosterListener rosterListener;
     private ConnectionListener connectionListener;
 
+    private final String TAG = "XmppUtils";
+
     private XmppUtils() {
     }
 
-    public void init(StanzaListener packetListener, StanzaFilter packetFilter,RosterListener rosterListener,ConnectionListener connectionListener) throws Exception {
+    public void init(StanzaListener packetListener, StanzaFilter packetFilter, RosterListener rosterListener, ConnectionListener connectionListener) throws Exception {
         String serverInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_SERVER);
         JSONObject jObj = new JSONObject(serverInfo);
         host = jObj.optString("host");
@@ -181,7 +189,7 @@ public class XmppUtils {
             chatMessageVo.setChatType(ChatType.text.getId());
             chatMessageVo.setMessageStatus(MessageStatus.success.getId());
             chatMessageVo.setMe(true);
-            chatMessageVo.setShowTime(ChatMessageDataBase.getInstance().isShowTime(chatId,chatMessageVo.getSendTime()));
+            chatMessageVo.setShowTime(ChatMessageDataBase.getInstance().isShowTime(chatId, chatMessageVo.getSendTime()));
             connection.sendStanza(msg);
         } catch (Exception e) {
             e.printStackTrace();
@@ -194,7 +202,7 @@ public class XmppUtils {
         String result = XmppAction.ACTION_REGISTER_SUCCESS;
 
         try {
-            if(connection == null){
+            if (connection == null) {
                 createConnection();
                 connection.connect();
             }
@@ -244,6 +252,43 @@ public class XmppUtils {
             vo.setStatus(entry.getStatus() != null ? entry.getStatus().toString() : "");
             vo.setType(entry.getType().toString());
             list.add(vo);
+        }
+        Logs.i(TAG, "getContactList = " + list);
+        return list;
+    }
+
+    public ArrayList<ContactVo> searchUser(String searchContent) {
+        ArrayList<ContactVo> list = new ArrayList<>();
+        UserSearchManager userSearchManager = new UserSearchManager(connection);
+        try {
+            Form form = userSearchManager.getSearchForm("search.xmpp");
+            Form answer = form.createAnswerForm();
+            answer.setAnswer("Name", true);
+//            answer.setAnswer("Email",true);
+            answer.setAnswer("Username", true);
+            answer.setAnswer("search", searchContent);
+            ReportedData reportedData = userSearchManager.getSearchResults(answer, "search.xmpp");
+            ArrayList<String> columnnames = new ArrayList<>();
+            for (ReportedData.Column column : reportedData.getColumns()) {
+                Logs.i(TAG, String.format("column Label = %s  Type = %s Variable = %s ", column.getLabel(), column.getType(), column.getVariable()));
+                columnnames.add(column.getLabel());
+            }
+            for (ReportedData.Row row : reportedData.getRows()) {
+//                Logs.i(TAG,String.format("row Label = %s  Type = %s Variable = %s ",row.getValues().getLabel(),column.getType(),column.getVariable()));
+                if (!row.getValues(columnnames.get(0)).isEmpty()) {
+                    String s = row.getValues(columnnames.get(0)).get(0).toString();
+                    list.add(new ContactVo(s));
+                    Logs.i(TAG, "row s = " + s);
+                }
+            }
+            Logs.i(TAG, String.format("searchUser jid = %s form = %s", searchContent, form));
+
+        } catch (SmackException.NoResponseException e) {
+            e.printStackTrace();
+        } catch (XMPPException.XMPPErrorException e) {
+            e.printStackTrace();
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
         }
         return list;
     }
