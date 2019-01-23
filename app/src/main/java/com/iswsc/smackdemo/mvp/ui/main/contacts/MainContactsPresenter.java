@@ -9,7 +9,7 @@ import android.os.Bundle;
 import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppAction;
+import com.iswsc.smackdemo.xmpp.XmppAction;
 import com.iswsc.smackdemo.vo.ContactVo;
 
 import java.util.ArrayList;

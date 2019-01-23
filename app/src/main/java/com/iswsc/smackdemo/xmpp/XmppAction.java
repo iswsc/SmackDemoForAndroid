@@ -1,4 +1,4 @@
-package com.iswsc.smackdemo.util;
+package com.iswsc.smackdemo.xmpp;
 
 /**
  * @version 1.0

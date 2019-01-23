@@ -17,7 +17,7 @@
 //import com.iswsc.smackdemo.util.JacenDialogUtils;
 //import com.iswsc.smackdemo.util.JacenUtils;
 //import com.iswsc.smackdemo.util.MySP;
-//import com.iswsc.smackdemo.util.XmppAction;
+//import com.iswsc.smackdemo.xmpp.XmppAction;
 //
 //import org.json.JSONException;
 //import org.json.JSONObject;

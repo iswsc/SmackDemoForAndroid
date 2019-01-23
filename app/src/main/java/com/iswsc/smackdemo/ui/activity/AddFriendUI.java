@@ -1,5 +1,7 @@
 package com.iswsc.smackdemo.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,17 +17,10 @@ import com.iswsc.smackdemo.adapter.MainContactsAdapter;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.ui.base.BaseActivity;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppUtils;
+import com.iswsc.smackdemo.xmpp.XmppUtils;
 import com.iswsc.smackdemo.vo.ContactVo;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smackx.disco.ServiceDiscoveryManager;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @version 1.0
@@ -98,18 +93,24 @@ public class AddFriendUI extends BaseActivity implements OnItemClickListener {
 
     @Override
     public void onItemClick(View view, int position) {
-        String jid = mAdapter.getItem(position).getJid();
-        Presence presence2 = new Presence(Presence.Type.subscribe);
-        presence2.setTo(jid);
-        try {
-            XmppUtils.getInstance().getConnection().sendStanza(presence2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XMPPException e) {
-            e.printStackTrace();
-        } catch (SmackException e) {
-            e.printStackTrace();
-        }
-        finish();
+        final String jid = mAdapter.getItem(position).getJid();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("添加好友");
+        builder.setMessage(String.format("是否添加[%s]为好友",jid));
+        builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                XmppUtils.getInstance().addUser(jid);
+                finish();
+            }
+        });
+        builder.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+
     }
 }

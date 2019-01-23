@@ -9,10 +9,11 @@ import android.util.Log;
 
 import com.iswsc.smackdemo.db.ChatMessageDataBase;
 import com.iswsc.smackdemo.enums.ChatType;
-import com.iswsc.smackdemo.enums.MessageStatus;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppAction;
-import com.iswsc.smackdemo.util.XmppUtils;
+import com.iswsc.smackdemo.util.Logs;
+import com.iswsc.smackdemo.xmpp.UserInfoExtensionElement;
+import com.iswsc.smackdemo.xmpp.XmppAction;
+import com.iswsc.smackdemo.xmpp.XmppUtils;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
 import com.iswsc.smackdemo.vo.ContactVo;
 
@@ -20,19 +21,12 @@ import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jivesoftware.smack.roster.RosterGroup;
 import org.jivesoftware.smack.roster.RosterListener;
-import org.jivesoftware.smack.roster.packet.RosterPacket;
-import org.jxmpp.util.XmppStringUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,6 +38,7 @@ import java.util.Collection;
 
 public class XmppService extends Service {
 
+    private static final String TAG = "XmppService";
     private MyStanzaListener myStanzaListener;
     private MyStanzaFilter myStanzaFilter;
     private MyRosterListener mRosterListener;
@@ -159,6 +154,12 @@ public class XmppService extends Service {
                 if (Message.Type.chat.equals(msg.getType())) {//单聊
                     if (TextUtils.isEmpty(msg.getBody()))
                         return;
+                    UserInfoExtensionElement element = msg.getExtension(UserInfoExtensionElement.elementName, UserInfoExtensionElement.nameSpace);
+                    if(element != null){
+                        Logs.i(TAG,"element.toXML() = " + element.toXML());
+                    }else{
+                        Logs.i(TAG,"element.toXML() = null");
+                    }
                     ChatMessageVo chatMessageVo = new ChatMessageVo();
                     chatMessageVo.parseMessage(msg);
                     chatMessageVo.setChatType(ChatType.text.getId());
@@ -186,52 +187,30 @@ public class XmppService extends Service {
         //有新好友请求 自动同意
         @Override
         public void entriesAdded(Collection<String> addresses) {
-            Log.i("XmppService", "entriesAdded = " + addresses);
+            Log.i(TAG, "entriesAdded = " + addresses);
             for (String jid : addresses) {
-                try {
-                    Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
-                    RosterEntry entry = roster.getEntry(jid);
-                    if(entry != null && entry.getType() == RosterPacket.ItemType.to){
-                        Presence presence1 = new Presence(Presence.Type.subscribed);
-                        presence1.setTo(jid);
-                        XmppUtils.getInstance().getConnection().sendStanza(presence1);
-                        return;
-                    }
-                    addEntry(jid, XmppStringUtils.parseLocalpart(jid), "Friends");
-                    Presence presence1 = new Presence(Presence.Type.subscribed);
-                    presence1.setTo(jid);
-                    XmppUtils.getInstance().getConnection().sendStanza(presence1);
-                    Presence presence2 = new Presence(Presence.Type.subscribe);
-                    presence2.setTo(jid);
-                    XmppUtils.getInstance().getConnection().sendStanza(presence2);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (XMPPException e) {
-                    e.printStackTrace();
-                } catch (SmackException e) {
-                    e.printStackTrace();
-                }
+                XmppUtils.getInstance().addUserAutoAgree(jid);
             }
         }
 
         //好友信息更新了 vcard
         @Override
         public void entriesUpdated(Collection<String> addresses) {
-            Log.i("XmppService", "entriesUpdated = " + addresses);
+            Log.i(TAG, "entriesUpdated = " + addresses);
 
         }
 
         //删除好友
         @Override
         public void entriesDeleted(Collection<String> addresses) {
-            Log.i("XmppService", "entriesDeleted = " + addresses);
+            Log.i(TAG, "entriesDeleted = " + addresses);
 
         }
 
         //好友在线状态改变
         @Override
         public void presenceChanged(Presence presence) {
-            Log.i("XmppService", "presenceChanged = " + presence.toString());
+            Log.i(TAG, "presenceChanged = " + presence.toString());
 
         }
     }
@@ -247,42 +226,42 @@ public class XmppService extends Service {
         //登录成功
         @Override
         public void authenticated(XMPPConnection connection, boolean resumed) {
-            Log.i("XmppService", "authenticated" + resumed);
+            Log.i(TAG, "authenticated" + resumed);
 
         }
 
         //连接关系
         @Override
         public void connectionClosed() {
-            Log.i("XmppService", "connectionClosed");
+            Log.i(TAG, "connectionClosed");
 
         }
 
         //连接报错
         @Override
         public void connectionClosedOnError(Exception e) {
-            Log.i("XmppService", "connectionClosedOnError " + e.toString());
+            Log.i(TAG, "connectionClosedOnError " + e.toString());
 
         }
 
         //重连成功
         @Override
         public void reconnectionSuccessful() {
-            Log.i("XmppService", "reconnectionSuccessful");
+            Log.i(TAG, "reconnectionSuccessful");
 
         }
 
         //重连时间
         @Override
         public void reconnectingIn(int seconds) {
-            Log.i("XmppService", "reconnectingIn = " + seconds);
+            Log.i(TAG, "reconnectingIn = " + seconds);
 
         }
 
         //重连失败
         @Override
         public void reconnectionFailed(Exception e) {
-            Log.i("XmppService", "reconnectionFailed = " + e.toString());
+            Log.i(TAG, "reconnectionFailed = " + e.toString());
 
         }
     }
@@ -297,48 +276,5 @@ public class XmppService extends Service {
         }
     }
 
-    /**
-     * Adds a new entry to the users Roster.
-     *
-     * @param jid      the jid.
-     * @param nickname the nickname.
-     * @param group    the contact group.
-     * @return the new RosterEntry.
-     */
-    public void addEntry(String jid, String nickname, String group) {
-        String[] groups = {group};
-        try {
-            Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
-            RosterEntry userEntry = roster.getEntry(jid);
 
-            boolean isSubscribed = true;
-            if (userEntry != null) {
-                isSubscribed = userEntry.getGroups().size() == 0;
-            }
-
-            if (isSubscribed) {
-                try {
-                    roster.createEntry(jid, nickname, new String[]{group});
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            RosterGroup rosterGroup = roster.getGroup(group);
-            if (rosterGroup == null) {
-                rosterGroup = roster.createGroup(group);
-            }
-
-            if (userEntry == null) {
-                roster.createEntry(jid, nickname, groups);
-                userEntry = roster.getEntry(jid);
-            } else {
-                userEntry.setName(nickname);
-                rosterGroup.addEntry(userEntry);
-            }
-
-            userEntry = roster.getEntry(jid);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 }

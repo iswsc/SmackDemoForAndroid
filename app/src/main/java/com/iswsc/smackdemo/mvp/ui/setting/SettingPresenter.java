@@ -1,17 +1,9 @@
 package com.iswsc.smackdemo.mvp.ui.setting;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.iswsc.smackdemo.app.MyApp;
-import com.iswsc.smackdemo.service.XmppService;
-import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MySP;
-import com.iswsc.smackdemo.util.XmppAction;
 
 import org.json.JSONException;
 import org.json.JSONObject;

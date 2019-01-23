@@ -1,9 +1,5 @@
 package com.iswsc.smackdemo.mvp.ui.main.message;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +12,6 @@ import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.ui.activity.ChattingUI;
 import com.iswsc.smackdemo.ui.base.BaseFragment;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppAction;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
 
 import java.util.ArrayList;

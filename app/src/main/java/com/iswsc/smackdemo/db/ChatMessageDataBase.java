@@ -4,9 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.iswsc.smackdemo.app.MyApp;
+import com.iswsc.smackdemo.util.MySP;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +26,9 @@ public class ChatMessageDataBase {
     private SQLiteDatabase db;
 
     private ChatMessageDataBase() {
-        helper = new DbHelper(MyApp.mContext, "chat.db");//数据库名固定写死，仅为方便测试
+        String userInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_USERINFO);
+        String account = userInfo.split("#_#")[0];
+        helper = new DbHelper(MyApp.mContext, account + ".db");
         db = helper.getWritableDatabase();
     }
 
@@ -76,10 +82,10 @@ public class ChatMessageDataBase {
         return list;
     }
 
-    public void clearUnReadByJid(String chatJid){
+    public void clearUnReadByJid(String chatJid) {
         ContentValues values = new ContentValues();
-        values.put(TableField._FIELD_UNREAD,0);
-        db.update(TableField._TABLE_CHAT,values,TableField._FIELD_CHAT_JID + "=?" ,new String[]{chatJid});
+        values.put(TableField._FIELD_UNREAD, 0);
+        db.update(TableField._TABLE_CHAT, values, TableField._FIELD_CHAT_JID + "=?", new String[]{chatJid});
     }
 
     public ArrayList<ChatMessageVo> getChatMessageListEvent() {

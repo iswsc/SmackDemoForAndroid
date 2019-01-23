@@ -11,10 +11,7 @@ import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MySP;
-import com.iswsc.smackdemo.util.XmppAction;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.iswsc.smackdemo.xmpp.XmppAction;
 
 
 /**
@@ -58,14 +55,7 @@ public class RegisterPresenter implements IRegisterContract.Presenter {
     @Override
     public void toRegister(String account, String password) {
         if (checkInfo(account, password)) {
-            JSONObject jObj = new JSONObject();
-            try {
-                jObj.put("account", account);
-                jObj.put("password", password);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            MySP.write(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_USERINFO, jObj.toString());
+            MySP.write(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_USERINFO, account + "#_#" + password);
 
             Bundle bundle = new Bundle();
             bundle.putString("account", account);

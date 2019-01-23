@@ -21,7 +21,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/avatar"
+            android:id="@+id/avatarUrl"
             android:layout_width="36dp"
             android:src="@mipmap/avatar_default"
             android:layout_alignParentRight="true"
@@ -32,7 +32,7 @@
             android:id="@+id/content"
             style="@style/ww_14"
             android:textColor="@color/white"
-            android:layout_toLeftOf="@id/avatar"
+            android:layout_toLeftOf="@id/avatarUrl"
             android:layout_marginRight="5dp"
             android:autoLink="email|web"
             android:background="@mipmap/icon_chat_right_bg"

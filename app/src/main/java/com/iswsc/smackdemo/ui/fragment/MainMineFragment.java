@@ -4,14 +4,7 @@ import android.view.View;
 
 import com.iswsc.smackdemo.R;
 import com.iswsc.smackdemo.ui.base.BaseFragment;
-import com.iswsc.smackdemo.util.XmppUtils;
-
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smackx.vcardtemp.VCardManager;
-import org.jivesoftware.smackx.vcardtemp.packet.VCard;
-
-import java.io.IOException;
+import com.iswsc.smackdemo.xmpp.XmppUtils;
 
 /**
  * Created by Jacen on 2017/8/22 13:39.

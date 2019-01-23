@@ -1,18 +1,15 @@
 package com.iswsc.smackdemo.ui.activity;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.EditText;
@@ -29,8 +26,8 @@ import com.iswsc.smackdemo.enums.ChatType;
 import com.iswsc.smackdemo.listener.OnItemClickListener;
 import com.iswsc.smackdemo.ui.base.BaseActivity;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppAction;
-import com.iswsc.smackdemo.util.XmppUtils;
+import com.iswsc.smackdemo.xmpp.XmppAction;
+import com.iswsc.smackdemo.xmpp.XmppUtils;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
 
 import java.util.List;

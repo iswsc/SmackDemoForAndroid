@@ -11,10 +11,7 @@ import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.service.XmppService;
 import com.iswsc.smackdemo.util.JacenUtils;
 import com.iswsc.smackdemo.util.MySP;
-import com.iswsc.smackdemo.util.XmppAction;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.iswsc.smackdemo.xmpp.XmppAction;
 
 
 /**
@@ -56,14 +53,7 @@ public class LoginPresenter implements ILoginContract.Presenter {
     @Override
     public void toLogin(String account, String password) {
         if (checkInfo(account, password)) {
-            JSONObject jObj = new JSONObject();
-            try {
-                jObj.put("account", account);
-                jObj.put("password", password);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            MySP.write(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_USERINFO, jObj.toString());
+            MySP.write(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_USERINFO, account + "#_#" + password);
 
             Bundle bundle = new Bundle();
             bundle.putString("account", account);
@@ -82,11 +72,9 @@ public class LoginPresenter implements ILoginContract.Presenter {
     public void initAccount() {
         String userInfo = MySP.readString(MyApp.mContext, MySP.FILE_APPLICATION, MySP.KEY_USERINFO);
         if (!TextUtils.isEmpty(userInfo)) {
-            try {
-                JSONObject jObj = new JSONObject(userInfo);
-                mLoginView.initAccount(jObj.optString("account"),jObj.optString("password"));
-            } catch (Exception e) {
-                e.printStackTrace();
+            String[] users = userInfo.split("#_#");
+            if(users.length == 2){
+                mLoginView.initAccount(users[0], users[1]);
             }
         }
     }

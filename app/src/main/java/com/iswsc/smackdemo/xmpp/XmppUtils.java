@@ -1,12 +1,13 @@
-package com.iswsc.smackdemo.util;
+package com.iswsc.smackdemo.xmpp;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.db.ChatMessageDataBase;
 import com.iswsc.smackdemo.enums.ChatType;
 import com.iswsc.smackdemo.enums.MessageStatus;
+import com.iswsc.smackdemo.util.Logs;
+import com.iswsc.smackdemo.util.MySP;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
 import com.iswsc.smackdemo.vo.ContactVo;
 
@@ -21,9 +22,12 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
+import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
+import org.jivesoftware.smack.roster.RosterGroup;
 import org.jivesoftware.smack.roster.RosterListener;
+import org.jivesoftware.smack.roster.packet.RosterPacket;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
@@ -37,7 +41,6 @@ import org.jxmpp.util.XmppStringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -100,11 +103,18 @@ public class XmppUtils {
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .build();
             SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
+            //配置扩展信息
+            initProvider();
         } catch (Exception e) {
             e.printStackTrace();
         }
         connection = new XMPPTCPConnection(configuration);
         connection.setParsingExceptionCallback(new ExceptionLoggingCallback());
+    }
+
+    private void initProvider(){
+        ProviderManager.addExtensionProvider(UserInfoExtensionElement.elementName, UserInfoExtensionElement.nameSpace,new UserInfoPacketExtensionProvider());
+
     }
 
     public XMPPTCPConnection getConnection() throws IOException, XMPPException, SmackException {
@@ -184,6 +194,7 @@ public class XmppUtils {
             msg.setTo(chatId);
             msg.setFrom(getConnection().getUser());
             msg.setBody(content);
+            msg.addExtension(new UserInfoExtensionElement(chatId,"", System.currentTimeMillis()));
             chatMessageVo.parseMessage(msg);
             chatMessageVo.setChatJid(chatId);
             chatMessageVo.setChatType(ChatType.text.getId());
@@ -257,6 +268,98 @@ public class XmppUtils {
         return list;
     }
 
+    public boolean addUser(String jid) {
+        boolean result = false;
+        Presence presence2 = new Presence(Presence.Type.subscribe);
+        presence2.setTo(jid);
+        try {
+            XmppUtils.getInstance().getConnection().sendStanza(presence2);
+            result = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void addUserAutoAgree(String jid){
+        try {
+            Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
+            RosterEntry entry = roster.getEntry(jid);
+            Logs.i(TAG, String.format("RosterEntry type = %s status = %s name = %s user = %s ",entry.getType() ,entry.getStatus(),entry.getName(),entry.getUser()));
+            if ( entry.getType() == RosterPacket.ItemType.both) {//已经是好友了
+                return;
+            }
+            if (entry.getType() == RosterPacket.ItemType.to) {
+                Presence presence1 = new Presence(Presence.Type.subscribed);
+                presence1.setTo(jid);
+                XmppUtils.getInstance().getConnection().sendStanza(presence1);
+                Logs.i(TAG, "111");
+                return;
+            }
+            Logs.i(TAG, "222");
+            addEntry(jid, XmppStringUtils.parseLocalpart(jid), "Friends");
+            Presence presence1 = new Presence(Presence.Type.subscribed);
+            presence1.setTo(jid);
+            XmppUtils.getInstance().getConnection().sendStanza(presence1);
+            Presence presence2 = new Presence(Presence.Type.subscribe);
+            presence2.setTo(jid);
+            XmppUtils.getInstance().getConnection().sendStanza(presence2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Adds a new entry to the users Roster.
+     *
+     * @param jid      the jid.
+     * @param nickname the nickname.
+     * @param group    the contact group.
+     * @return the new RosterEntry.
+     */
+    private void addEntry(String jid, String nickname, String group) {
+        String[] groups = {group};
+        try {
+            Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
+            RosterEntry userEntry = roster.getEntry(jid);
+
+            boolean isSubscribed = true;
+            if (userEntry != null) {
+                isSubscribed = userEntry.getGroups().size() == 0;
+            }
+
+            if (isSubscribed) {
+                try {
+                    roster.createEntry(jid, nickname, new String[]{group});
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            RosterGroup rosterGroup = roster.getGroup(group);
+            if (rosterGroup == null) {
+                rosterGroup = roster.createGroup(group);
+            }
+
+            if (userEntry == null) {
+                roster.createEntry(jid, nickname, groups);
+                userEntry = roster.getEntry(jid);
+            } else {
+                userEntry.setName(nickname);
+                rosterGroup.addEntry(userEntry);
+            }
+
+            userEntry = roster.getEntry(jid);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     public ArrayList<ContactVo> searchUser(String searchContent) {
         ArrayList<ContactVo> list = new ArrayList<>();
         UserSearchManager userSearchManager = new UserSearchManager(connection);

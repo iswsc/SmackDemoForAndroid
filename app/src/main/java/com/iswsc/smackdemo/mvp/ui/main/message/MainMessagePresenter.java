@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import com.iswsc.smackdemo.app.MyApp;
 import com.iswsc.smackdemo.util.JacenUtils;
-import com.iswsc.smackdemo.util.XmppAction;
+import com.iswsc.smackdemo.xmpp.XmppAction;
 import com.iswsc.smackdemo.vo.ChatMessageVo;
 
 /**

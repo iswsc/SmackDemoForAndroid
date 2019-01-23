@@ -17,7 +17,7 @@
 //import com.iswsc.smackdemo.ui.activity.ChattingUI;
 //import com.iswsc.smackdemo.ui.base.BaseFragment;
 //import com.iswsc.smackdemo.util.JacenUtils;
-//import com.iswsc.smackdemo.util.XmppAction;
+//import com.iswsc.smackdemo.xmpp.XmppAction;
 //import com.iswsc.smackdemo.vo.ChatMessageVo;
 //import com.iswsc.smackdemo.vo.ContactVo;
 //

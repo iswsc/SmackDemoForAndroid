@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.iswsc.smackdemo.R;
+import com.iswsc.smackdemo.db.ChatMessageDataBase;
 import com.iswsc.smackdemo.enums.MainTab;
 import com.iswsc.smackdemo.mvp.ui.main.contacts.MainContactsFragment;
 import com.iswsc.smackdemo.mvp.ui.main.message.MainMessageFragment;
@@ -74,6 +75,7 @@ public class MainUI extends BaseFragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this,XmppService.class));
+        ChatMessageDataBase.getInstance().close();
     }
 
     void setTab(MainTab tab) {

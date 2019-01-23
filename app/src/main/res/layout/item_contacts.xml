@@ -15,7 +15,7 @@
         android:paddingTop="5dp">
 
         <ImageView
-            android:id="@+id/avatar"
+            android:id="@+id/avatarUrl"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginRight="10dp"
@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/avatar"
+            android:layout_toRightOf="@id/avatarUrl"
             android:orientation="vertical">
 
             <LinearLayout
