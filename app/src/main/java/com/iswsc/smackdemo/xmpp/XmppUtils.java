@@ -285,6 +285,19 @@ public class XmppUtils {
         return result;
     }
 
+    public boolean removeUser(String jid){
+        boolean result = false;
+        try {
+            Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
+            RosterEntry entry = roster.getEntry(jid);
+            roster.removeEntry(entry);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public void addUserAutoAgree(String jid){
         try {
             Roster roster = Roster.getInstanceFor(XmppUtils.getInstance().getConnection());
